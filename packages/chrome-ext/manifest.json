@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "nexus-agent",
+  "version": "1.0",
+  "description": "bridges cloud LLMs (like ChatGPT, Gemini) with your local machine. 将云端大模型（如 ChatGPT、Gemini）与您的本地计算机连接",
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "tabs",
+    "scripting",
+    "webRequest"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_popup": "index.html",
+    "default_width": 360,
+    "default_height": 500
+  },
+  "background": {
+    "service_worker": "src/background/index",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://aistudio.google.com/*"],
+      "js": ["src/content/gemini/index"],
+      "css": ["unocss.css"]
+    },
+    {
+      "matches": ["https://www.tongyi.com/*"],
+      "js": ["src/content/qianWen/index"],
+      "css": ["unocss.css"]
+    },
+    {
+      "matches": ["https://chat.deepseek.com/*"],
+      "js": ["src/content/deepSeek/index"],
+      "css": ["unocss.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png"
+  }
+}
