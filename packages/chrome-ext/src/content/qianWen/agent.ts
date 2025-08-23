@@ -32,7 +32,7 @@ export class QwenAgent extends PlatformAdapter {
 
   async getNewChatSelector() {
     const selectors = ['button.tongyi-ui-button', '.createBtn--CjdYR1Br']
-    return []
+    return Promise.all(selectors.map(selector => waitForElement(selector, 800)))
   }
 
   isSending(el: HTMLElement): boolean {

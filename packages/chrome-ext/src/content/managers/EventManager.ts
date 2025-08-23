@@ -2,6 +2,7 @@ import type { PlatformAdapter } from '../PlatformAdapter'
 import type { InterceptorEventListener } from '@/utils'
 import { getPrompt, qToTaskXML } from '@/config/prompt'
 import { EventInterceptor, hackClickEvent, hackInputEvent, modifyInputValue } from '@/utils'
+import { Log } from '@/utils/Logger'
 
 /**
  * 事件管理器
@@ -95,11 +96,16 @@ export class EventManager {
       return
     }
 
-    const newChatEls = await this.platformAdapter.getNewChatSelector()
-    for (const newChatEl of newChatEls) {
-      hackClickEvent(newChatEl, async (event: MouseEvent, originalListeners: InterceptorEventListener[]) => {
-        onNewChat(event, originalListeners)
-      })
+    try {
+      const newChatEls = await this.platformAdapter.getNewChatSelector()
+      for (const newChatEl of newChatEls) {
+        hackClickEvent(newChatEl, async (event: MouseEvent, originalListeners: InterceptorEventListener[]) => {
+          onNewChat(event, originalListeners)
+        })
+      }
+    }
+    catch (error) {
+      Log.error('劫持新聊天按钮点击事件失败', error)
     }
   }
 

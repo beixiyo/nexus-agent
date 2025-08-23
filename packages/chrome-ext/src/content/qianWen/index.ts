@@ -10,7 +10,7 @@ let agent: QwenAgent | null = null
 runScript(main)
 
 async function main() {
-  Log.info('开始初始化 千问')
+  Log.info('开始初始化 Nexus Agent')
 
   agent = new QwenAgent()
   await agent.init()
@@ -33,7 +33,7 @@ async function main() {
     }, 1000)
   })
 
-  Log.info('千问 初始化完成')
-  Message.success('千问 初始化完成')
+  Log.info('Nexus Agent 初始化完成')
+  Message.success('Nexus Agent 初始化完成')
   console.log(agent.messages)
 }

@@ -1,6 +1,5 @@
-import type { EventManager, MessageManager } from '../managers'
 import { PlatformAdapter } from '@/content/PlatformAdapter'
-import { waitForElement } from '@/utils'
+import { waitForElement, waitForElements } from '@/utils'
 
 /**
  * DeepSeek 平台适配器
@@ -22,18 +21,18 @@ export class DeepSeekAgent extends PlatformAdapter {
   }
 
   async getQSelector() {
-    const el = await waitForElement('._9663006')
-    return [el]
+    const el = await waitForElements('._9663006')
+    return el
   }
 
   async getASelector() {
-    const el = await waitForElement('._4f9bf79._43c05b5')
-    return [el]
+    const el = await waitForElements('._4f9bf79._43c05b5')
+    return el
   }
 
   async getNewChatSelector() {
     const selectors = ['.c7dddcde', '.a7f3a288.f0d4f23d>div:nth-child(3) .ds-icon-button']
-    return Promise.all(selectors.map(selector => waitForElement(selector)))
+    return Promise.all(selectors.map(selector => waitForElement(selector, 800)))
   }
 
   isSending(el: HTMLElement): boolean {

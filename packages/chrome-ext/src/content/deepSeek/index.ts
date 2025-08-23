@@ -7,7 +7,7 @@ let agent: DeepSeekAgent | null = null
 runScript(main)
 
 async function main() {
-  Log.info('开始初始化 DeepSeek')
+  Log.info('开始初始化 Nexus Agent')
 
   agent = new DeepSeekAgent()
   await agent.init()
@@ -20,7 +20,7 @@ async function main() {
     }, 1000)
   })
 
-  Log.info('DeepSeek 初始化完成')
-  Message.success('DeepSeek 初始化完成')
+  Log.info('Nexus Agent 初始化完成')
+  Message.success('Nexus Agent 初始化完成')
   console.log(agent.messages)
 }
