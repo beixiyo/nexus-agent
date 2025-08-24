@@ -10,7 +10,14 @@ export class AiStudioGeminiAgent extends PlatformAdapter {
   async getQAEls(): Promise<{ qEls: HTMLElement[], aEls: HTMLElement[] }> {
     const qEls = await waitForElements('.chat-turn-container.user')
     const aEls = await waitForElements('.model-prompt-container')
-    return { qEls, aEls }
+
+    const clonedAEls = aEls.map((el) => {
+      const clonedEl = el.cloneNode(true) as HTMLElement
+      clonedEl.querySelector('ms-thought-chunk')?.remove()
+      return clonedEl
+    })
+
+    return { qEls, aEls: clonedAEls }
   }
 
   async getUserInputEl(): SelectorType {

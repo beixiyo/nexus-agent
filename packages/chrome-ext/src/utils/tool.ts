@@ -6,13 +6,37 @@ import { twMerge } from 'tailwind-merge'
 /**
  * Content Script 执行插件脚本
  * @param fn 脚本函数
+ * @param idleTime 空闲时间
  */
-export function runScript(fn: Function) {
+export function runScript(fn: Function, idleTime = 500) {
   if (document.readyState === 'complete') {
-    fn()
+    startNetMonitoring()
   }
   else {
-    window.addEventListener('load', () => fn())
+    window.addEventListener('load', () => startNetMonitoring())
+  }
+
+  function startNetMonitoring() {
+    let timeoutId: NodeJS.Timeout
+    const observer = new PerformanceObserver(() => {
+      /**
+       * 每当有新的资源（网络请求）加载时，这个回调会触发
+       * 我们重置计时器
+       */
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        /** 如果 idleTime 后这个定时器依然执行，说明网络已平静 */
+        fn()
+        observer.disconnect() // 执行后停止监控，避免重复执行
+      }, idleTime)
+    })
+
+    observer.observe({ entryTypes: ['resource'] })
+    /** 初始设置一个计时器，以防页面加载后没有任何后续请求 */
+    timeoutId = setTimeout(() => {
+      fn()
+      observer.disconnect()
+    }, idleTime)
   }
 }
 
