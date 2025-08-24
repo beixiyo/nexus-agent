@@ -2,21 +2,20 @@ import type { MessageData } from '@/types'
 import type { InterceptorEventListener } from '@/utils'
 import { EventBus } from '@jl-org/tool'
 import { Log } from '@/utils/Logger'
-import { EventManager, MessageManager, PermissionManager } from './managers'
+import { EventManager, MessageManager, PermissionManager, XMLProcessor } from './managers'
 
 /**
  * 平台适配器基础接口
  * 所有LLM平台的适配器都需要实现这些方法
  */
 export abstract class PlatformAdapter extends EventBus<EventMap> {
-  abstract getUserInputSelector(): SelectorType
-  abstract getSendButtonSelector(): SelectorType
-  abstract getObserveSendingSelector(): SelectorType
+  abstract getUserInputEl(): SelectorType
+  abstract getSendButtonEl(): SelectorType
+  abstract getObserveSendingEl(): SelectorType
 
-  abstract getQSelector(): SelectorType
-  abstract getASelector(): SelectorType
+  abstract getQAEls(): Promise<{ qEls: HTMLElement[], aEls: HTMLElement[] }>
 
-  abstract getNewChatSelector(): SelectorType
+  abstract getNewChatEls(): SelectorType
   abstract isSending(el: HTMLElement): boolean
 
   isServerProcessing = false
@@ -93,7 +92,7 @@ export abstract class PlatformAdapter extends EventBus<EventMap> {
   }
 
   get messages() {
-    return this.messageManager?.getMessages() || []
+    return this.messageManager?.getMessages(true) || []
   }
 
   /**
@@ -106,6 +105,16 @@ export abstract class PlatformAdapter extends EventBus<EventMap> {
 
     const lastAnswer = await this.messageManager.getLastAnswer()
     if (!lastAnswer.trim()) {
+      return
+    }
+
+    const toolsCallArr = XMLProcessor.parseTools(lastAnswer)
+    if (toolsCallArr.length > 0) {
+      this.isServerProcessing = false
+    }
+
+    if (this.isServerProcessing) {
+      Log.info('此次为服务器返回的结果，并且没有工具调用，无需处理')
       return
     }
 

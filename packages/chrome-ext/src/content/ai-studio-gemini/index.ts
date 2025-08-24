@@ -3,26 +3,26 @@ import { Message } from '@/components'
 import { ListenApi } from '@/config/listenApi'
 import { runScript } from '@/utils'
 import { Log } from '@/utils/Logger'
-import { QwenAgent } from './agent'
+import { AiStudioGeminiAgent } from './agent'
 
-let agent: QwenAgent | null = null
+let agent: AiStudioGeminiAgent | null = null
 
 runScript(main)
 
 async function main() {
   Log.info('开始初始化 Nexus Agent')
 
-  agent = new QwenAgent()
+  agent = new AiStudioGeminiAgent()
   await agent.init()
 
   chrome.runtime.onMessage.addListener((message: MessageData) => {
     if (
       message.type === 'webRequest.onCompleted'
-      && message.data.url.includes(ListenApi.qianWen)
+      && message.data.url.includes(ListenApi.aiStudioGemini)
     ) {
       setTimeout(() => {
         agent?.emit('onCompleted', message)
-      }, 2000)
+      }, 500)
       console.log('emit onCompleted', message)
     }
   })

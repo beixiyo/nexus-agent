@@ -89,12 +89,12 @@ export class EventManager {
    * @param onNewChat 新聊天事件回调
    */
   async hackNewChatClick(onNewChat: (event: MouseEvent, originalListeners: InterceptorEventListener[]) => void): Promise<void> {
-    if (!this.platformAdapter.getNewChatSelector()) {
+    if (!this.platformAdapter.getNewChatEls()) {
       return
     }
 
     try {
-      const newChatEls = await this.platformAdapter.getNewChatSelector()
+      const newChatEls = await this.platformAdapter.getNewChatEls()
       for (const newChatEl of newChatEls) {
         hackClickEvent(newChatEl, async (event: MouseEvent, originalListeners: InterceptorEventListener[]) => {
           onNewChat(event, originalListeners)
@@ -110,7 +110,7 @@ export class EventManager {
    * 获取用户输入框元素
    */
   async getUserInputEl(): Promise<HTMLTextAreaElement> {
-    const element = await this.platformAdapter.getUserInputSelector()
+    const element = await this.platformAdapter.getUserInputEl()
     if (!element) {
       throw new Error('未找到用户输入框')
     }
@@ -122,7 +122,7 @@ export class EventManager {
    * 获取发送按钮元素
    */
   async getSendButtonEl(): Promise<HTMLElement> {
-    const element = await this.platformAdapter.getSendButtonSelector()
+    const element = await this.platformAdapter.getSendButtonEl()
     if (!element) {
       throw new Error('未找到发送按钮')
     }

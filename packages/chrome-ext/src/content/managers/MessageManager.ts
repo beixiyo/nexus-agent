@@ -17,7 +17,11 @@ export class MessageManager {
   /**
    * 获取消息列表
    */
-  getMessages(): QA[] {
+  getMessages(forceRefresh = false): QA[] {
+    if (forceRefresh) {
+      this.refreshMessages()
+    }
+
     return [...this.messages]
   }
 
@@ -78,8 +82,7 @@ export class MessageManager {
     const qas: QA[] = []
 
     try {
-      const qEls = await this.platformAdapter.getQSelector()
-      const aEls = await this.platformAdapter.getASelector()
+      const { aEls, qEls } = await this.platformAdapter.getQAEls()
       const len = Math.max(qEls.length, aEls.length)
 
       for (let i = 0; i < len; i++) {
@@ -113,7 +116,7 @@ export class MessageManager {
       this.messageObserver.disconnect()
     }
 
-    const sendingSelector = await this.platformAdapter.getObserveSendingSelector()
+    const sendingSelector = await this.platformAdapter.getObserveSendingEl()
     if (!sendingSelector?.length) {
       throw new Error('未找到监听发送中按钮')
     }

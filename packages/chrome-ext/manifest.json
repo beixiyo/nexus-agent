@@ -23,7 +23,7 @@
   "content_scripts": [
     {
       "matches": ["https://aistudio.google.com/*"],
-      "js": ["src/content/gemini/index"],
+      "js": ["src/content/ai-studio-gemini/index"],
       "css": ["unocss.css"]
     },
     {
