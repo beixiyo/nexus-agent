@@ -72,8 +72,8 @@ importers:
         specifier: workspace:*
         version: link:../agent
       '@jl-org/tool':
-        specifier: ^3.0.9
-        version: 3.0.9
+        specifier: ^3.1.0
+        version: 3.1.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -601,8 +601,8 @@ packages:
       kleur:
         optional: true
 
-  '@jl-org/tool@3.0.9':
-    resolution: {integrity: sha512-QYGwoH7YQc3TIF25qV+jp5ZCngjoib89CUkMJmzgsMCSwoPgRjujvIXC61oliHVPxgDatpER4L+6eSC8wAQ0eA==}
+  '@jl-org/tool@3.1.0':
+    resolution: {integrity: sha512-E/aXlnsLFvssSn6KWBpSx4JyT9Anl2UM+H5xHloo2dX8o3U0ZQo8BrPNbiEyKOTbezRrIqhQgpB+eDjRfjFX6Q==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -3295,7 +3295,7 @@ snapshots:
     optionalDependencies:
       kleur: 4.1.5
 
-  '@jl-org/tool@3.0.9': {}
+  '@jl-org/tool@3.1.0': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:

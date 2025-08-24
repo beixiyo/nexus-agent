@@ -14,7 +14,7 @@
     "@jl-org/http": "^1.1.2",
     "@jl-org/log": "^1.0.0",
     "@jl-org/nexus-agent": "workspace:*",
-    "@jl-org/tool": "^3.0.9",
+    "@jl-org/tool": "^3.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.16.0",

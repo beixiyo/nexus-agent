@@ -1,6 +1,7 @@
 import type { MessageData } from '@/types'
 import type { InterceptorEventListener } from '@/utils'
 import { EventBus } from '@jl-org/tool'
+import { isEnterKey } from '@/utils'
 import { Log } from '@/utils/Logger'
 import { EventManager, MessageManager, PermissionManager, XMLProcessor } from './managers'
 
@@ -23,6 +24,8 @@ export abstract class PlatformAdapter extends EventBus<EventMap> {
   private eventManager: EventManager | null = null
   private messageManager: MessageManager | null = null
   private unbindEvents: Set<Function> = new Set()
+
+  inputSendKeyEvent = isEnterKey
 
   /**
    * 初始化事件劫持
@@ -123,6 +126,10 @@ export abstract class PlatformAdapter extends EventBus<EventMap> {
       result => this.eventManager!.sendServerResultToLLM(result),
     )
     this.messageManager?.unobserveMessage()
+  }
+
+  extraHandleQA(outHTML: string = '') {
+    return outHTML
   }
 
   dispose() {

@@ -1,4 +1,4 @@
-import type { ListenerCallback, ListenerOptions, MessageData, MessageType, ResourceType, ResponseData, StorageChange, UrlType } from '@/types'
+import type { ListenerCallback, ListenerOptions, MessageData, ResourceType, ResponseData, StorageChange, UrlType } from '@/types'
 import { ChromeEvent } from './ChromeEvent'
 
 /**

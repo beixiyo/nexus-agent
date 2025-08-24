@@ -4,10 +4,11 @@
 
 <video muted autoplay controls src="https://github.com/user-attachments/assets/17d127dd-553f-4185-8463-8f6344e36f94" title="项目功能演示"></video>
 
-## 已经适配的平台
+## 已适配的 LLM 平台
 
 - 通义千问 https://www.tongyi.com/qianwen
 - DeepSeek https://chat.deepseek.com/
+- AI Studio Gemini https://aistudio.google.com/prompts/new_chat
 
 ## 注意事项
 

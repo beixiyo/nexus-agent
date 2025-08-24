@@ -11,8 +11,8 @@ import { Log } from '@/utils/Logger'
 export class EventManager {
   private unhackSendBtnClickFn: VoidFunction = () => { }
   private unhackInputEventFn: VoidFunction = () => { }
-  private hackSendBtnClickFn: VoidFunction = () => { }
-  private hackInputFn: VoidFunction = () => { }
+  private hackSendBtnClickFn: () => Promise<void> = async () => { }
+  private hackInputFn: () => Promise<void> = async () => { }
 
   constructor(private readonly platformAdapter: PlatformAdapter) { }
 
@@ -20,9 +20,8 @@ export class EventManager {
    * 劫持输入事件
    */
   async hackInput(opts: HackEventOpts): Promise<void> {
-    const input = await this.getUserInputEl()
-
-    this.hackInputFn = () => {
+    this.hackInputFn = async () => {
+      const input = await this.getUserInputEl()
       this.unhackInputEventFn()
       this.unhackInputEventFn = hackInputEvent(
         input,
@@ -45,21 +44,22 @@ export class EventManager {
         },
         {
           preventDefault: () => false,
+          keyMatcher: this.platformAdapter.inputSendKeyEvent,
         },
       )
     }
 
-    this.hackInputFn()
+    await this.hackInputFn()
   }
 
   /**
    * 劫持发送按钮点击事件
    */
   async hackSendBtnClick(opts: HackEventOpts): Promise<void> {
-    const submitButton = await this.getSendButtonEl()
-    const input = await this.getUserInputEl() as HTMLTextAreaElement
+    this.hackSendBtnClickFn = async () => {
+      const submitButton = await this.getSendButtonEl()
+      const input = await this.getUserInputEl() as HTMLTextAreaElement
 
-    this.hackSendBtnClickFn = () => {
       this.unhackSendBtnClickFn()
       this.unhackSendBtnClickFn = hackClickEvent(
         submitButton,
@@ -81,7 +81,7 @@ export class EventManager {
       )
     }
 
-    this.hackSendBtnClickFn()
+    await this.hackSendBtnClickFn()
   }
 
   /**
@@ -141,16 +141,19 @@ export class EventManager {
     modifyInputValue(inputEl, result)
 
     const btn = await this.getSendButtonEl()
-    btn.click()
     /**
      * 此次为服务器返回的结果，需要设置标志位，无需处理
      */
     this.platformAdapter.isServerProcessing = true
 
     requestAnimationFrame(() => {
-      modifyInputValue(inputEl, '')
-      this.hackInputFn()
-      this.hackSendBtnClickFn()
+      btn.click()
+
+      requestAnimationFrame(async () => {
+        modifyInputValue(inputEl, '')
+        await this.hackInputFn()
+        await this.hackSendBtnClickFn()
+      })
     })
   }
 

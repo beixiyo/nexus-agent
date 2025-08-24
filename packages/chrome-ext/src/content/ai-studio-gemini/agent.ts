@@ -1,23 +1,63 @@
 import type { SelectorType } from '../PlatformAdapter'
 import { PlatformAdapter } from '@/content/PlatformAdapter'
-import { waitForElement, waitForElements } from '@/utils'
+import { isCtrlEnterKey, waitForElement, waitForElements } from '@/utils'
 
 /**
  * AI Studio Gemini 平台适配器
  * 实现 PlatformAdapter 接口以适配 AI Studio Gemini 平台
  */
 export class AiStudioGeminiAgent extends PlatformAdapter {
+  override inputSendKeyEvent = isCtrlEnterKey
+
   async getQAEls(): Promise<{ qEls: HTMLElement[], aEls: HTMLElement[] }> {
-    const qEls = await waitForElements('.chat-turn-container.user')
-    const aEls = await waitForElements('.model-prompt-container')
+    const qEls: HTMLElement[] = []
+    const aEls: HTMLElement[] = []
 
-    const clonedAEls = aEls.map((el) => {
-      const clonedEl = el.cloneNode(true) as HTMLElement
-      clonedEl.querySelector('ms-thought-chunk')?.remove()
-      return clonedEl
-    })
+    /** 获取所有聊天回合的元素，以便按顺序遍历。 */
+    const allTurns = Array.from(document.body.querySelectorAll('ms-chat-turn')) as HTMLElement[]
+    let i = 0
+    let isUser = false
+    let isModel = false
+    let isThought = false
+    let isInit = true
+    let currentTurn = allTurns[i]
 
-    return { qEls, aEls: clonedAEls }
+    while (currentTurn) {
+      if ((isUser || isThought) && !isInit) {
+        const isModelTurn = currentTurn.querySelector('[data-turn-role="Model"]')
+        if (isModelTurn) {
+          const isThoughtChunk = currentTurn.querySelector('ms-thought-chunk')
+          if (isThoughtChunk) {
+            isThought = true
+            isModel = false
+            isUser = false
+            currentTurn = allTurns[++i]
+            continue
+          }
+          else {
+            aEls.push(currentTurn)
+            isModel = true
+            isUser = false
+            isThought = false
+          }
+        }
+      }
+
+      if (isModel || isInit) {
+        const isUserTurn = currentTurn.querySelector('[data-turn-role="User"]')
+        if (isUserTurn) {
+          qEls.push(currentTurn)
+          isUser = true
+          isModel = false
+          isThought = false
+          isInit = false
+        }
+      }
+
+      currentTurn = allTurns[++i]
+    }
+
+    return { qEls, aEls }
   }
 
   async getUserInputEl(): SelectorType {
@@ -41,5 +81,11 @@ export class AiStudioGeminiAgent extends PlatformAdapter {
 
   isSending(el: HTMLElement): boolean {
     return el.getAttribute('type') === 'button'
+  }
+
+  override extraHandleQA(outHTML: string = ''): string {
+    return outHTML
+      .replace(/editmore_vert|more_vert/g, '')
+      .replace(/thumb_upthumb_down(\s*\d+.\d+s)?/g, '')
   }
 }

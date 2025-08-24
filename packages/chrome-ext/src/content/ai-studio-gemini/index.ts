@@ -7,7 +7,7 @@ import { AiStudioGeminiAgent } from './agent'
 
 let agent: AiStudioGeminiAgent | null = null
 
-runScript(main)
+runScript(main, 1000)
 
 async function main() {
   Log.info('开始初始化 Nexus Agent')
@@ -22,7 +22,7 @@ async function main() {
     ) {
       setTimeout(() => {
         agent?.emit('onCompleted', message)
-      }, 500)
+      }, 2500)
       console.log('emit onCompleted', message)
     }
   })

@@ -22,7 +22,7 @@ async function main() {
     ) {
       setTimeout(() => {
         agent?.emit('onCompleted', message)
-      }, 2000)
+      }, 2500)
       console.log('emit onCompleted', message)
     }
   })

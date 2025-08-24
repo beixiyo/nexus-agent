@@ -1,7 +1,6 @@
 import type { PlatformAdapter } from '../PlatformAdapter'
 import type { QA } from '@/types'
-import { HTMLToStr } from '@jl-org/tool'
-import { getPrompt } from '@/config/prompt'
+import { extractDOMText } from '@jl-org/tool'
 
 /**
  * 消息管理器
@@ -40,12 +39,15 @@ export class MessageManager {
       return false
     }
 
-    if (firstMessage.q.startsWith(getPrompt())) {
-      this.hasSystemPrompt = true
-      return true
-    }
+    /**
+     * Ai Studio Gemini 是动态加载显示的，为了适配它，无法这么做
+     */
+    // if (firstMessage.q.startsWith(getPrompt())) {
+    //   this.hasSystemPrompt = true
+    //   return true
+    // }
 
-    return false
+    return true
   }
 
   /**
@@ -91,10 +93,10 @@ export class MessageManager {
         const qa: QA = { q: '', a: '' }
 
         if (qEl) {
-          qa.q = HTMLToStr(qEl.outerHTML) || ''
+          qa.q = this.platformAdapter.extraHandleQA(extractDOMText(qEl.outerHTML) || '')
         }
         if (aEl) {
-          qa.a = HTMLToStr(aEl.outerHTML) || ''
+          qa.a = this.platformAdapter.extraHandleQA(extractDOMText(aEl.outerHTML) || '')
         }
         qas.push(qa)
       }

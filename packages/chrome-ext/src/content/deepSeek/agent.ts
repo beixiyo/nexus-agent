@@ -8,7 +8,7 @@ import { waitForElement, waitForElements } from '@/utils'
 export class DeepSeekAgent extends PlatformAdapter {
   async getQAEls(): Promise<{ qEls: HTMLElement[], aEls: HTMLElement[] }> {
     const qEls = await waitForElements('._9663006')
-    const aEls = await waitForElements('._4f9bf79._43c05b5')
+    const aEls = await waitForElements('._4f9bf79._43c05b5 .ds-markdown.ds-markdown--block')
     return { qEls, aEls }
   }
 

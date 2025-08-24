@@ -87,8 +87,18 @@ export function hackClickEvent(
  * @param event 键盘事件
  * @returns 是否匹配
  */
-function isEnterKey(event: KeyboardEvent): boolean {
+export function isEnterKey(event: KeyboardEvent): boolean {
   return event.key === 'Enter' && !event.ctrlKey && !event.shiftKey && !event.altKey
+}
+
+/**
+ * 默认的 Ctrl + Enter 键匹配器
+ * 当用户按下 Ctrl + Enter 键时返回 true
+ * @param event 键盘事件
+ * @returns 是否匹配
+ */
+export function isCtrlEnterKey(event: KeyboardEvent): boolean {
+  return event.key === 'Enter' && event.ctrlKey
 }
 
 type HackInputEventOptions = {
@@ -96,6 +106,7 @@ type HackInputEventOptions = {
    * 是否匹配
    * @param event 键盘事件
    * @returns 是否匹配
+   * @default isEnterKey
    */
   keyMatcher?: (event: KeyboardEvent) => boolean
   /**

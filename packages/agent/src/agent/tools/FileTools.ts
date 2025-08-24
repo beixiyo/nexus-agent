@@ -28,7 +28,7 @@ export class FileTools {
    */
   async writeFile(filePath: string, content: string): Promise<string> {
     const name: ToolName = 'write_file'
-    // return `用户拒绝执行 ${name}`
+    return `用户拒绝执行 ${name}`
 
     try {
       const fullPath = PathSecurityUtils.validatePath(this.workspaceRoot, filePath)
@@ -68,7 +68,6 @@ export class FileTools {
    */
   async listFile(workspacePath: string): Promise<string> {
     const name: ToolName = 'list_file'
-    return `用户拒绝执行 ${name}`
 
     try {
       const files = readdirSync(PathSecurityUtils.validatePath(this.workspaceRoot, workspacePath))
