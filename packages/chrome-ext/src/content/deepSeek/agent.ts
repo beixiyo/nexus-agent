@@ -12,12 +12,13 @@ export class DeepSeekAgent extends PlatformAdapter {
   }
 
   async getSendButtonSelector() {
-    const el = await waitForElement('div._7436101.bcc55ca1[role="button"]')
+    const el = await waitForElement('div._7436101[role="button"]')
     return [el]
   }
 
-  getObserveSendingSelector() {
-    return this.getSendButtonSelector()
+  async getObserveSendingSelector() {
+    const el = await waitForElement('.bf38813a')
+    return [el]
   }
 
   async getQSelector() {
@@ -36,6 +37,6 @@ export class DeepSeekAgent extends PlatformAdapter {
   }
 
   isSending(el: HTMLElement): boolean {
-    return !el.querySelector('div')?.querySelector('svg')
+    return !!el.querySelector('.480132b')
   }
 }

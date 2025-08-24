@@ -30,7 +30,7 @@ async function main() {
     agent?.dispose()
     setTimeout(() => {
       location.reload()
-    }, 1000)
+    }, 500)
   })
 
   Log.info('Nexus Agent 初始化完成')

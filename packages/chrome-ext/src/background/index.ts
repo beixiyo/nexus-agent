@@ -5,7 +5,7 @@ console.log('Background script 开始初始化...')
 
 ChromeListener.listenWebRequest({
   urls: [
-    `https://${ListenApi.qianWen}`,
+    ...Object.values(ListenApi).map(api => `https://${api}`),
   ],
   types: ['xmlhttprequest'],
   onBeforeRequest: (details) => {

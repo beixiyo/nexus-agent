@@ -66,7 +66,12 @@ export abstract class PlatformAdapter extends EventBus<EventMap> {
     const unbindOnBeforeRequest = this.on('onBeforeRequest', (message) => {
       this.obMessage()
     })
+    const unbindOnCompleted = this.on('onCompleted', (message) => {
+      this.processRequest()
+    })
+
     this.unbindEvents.add(unbindOnBeforeRequest)
+    this.unbindEvents.add(unbindOnCompleted)
   }
 
   obMessage() {
@@ -83,7 +88,6 @@ export abstract class PlatformAdapter extends EventBus<EventMap> {
         return
       }
 
-      await this.messageManager!.refreshMessages()
       await this.processRequest()
     })
   }
@@ -126,6 +130,7 @@ export type EventMap = {
     originalListeners: InterceptorEventListener[]
   }
   onBeforeRequest: MessageData<chrome.webRequest.OnBeforeRequestDetails>
+  onCompleted: MessageData<chrome.webRequest.OnCompletedDetails>
 }
 
 export type SelectorType = Promise<HTMLElement[]>

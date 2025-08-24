@@ -9,9 +9,6 @@ import { Log } from '@/utils/Logger'
  * 负责事件劫持和输入处理
  */
 export class EventManager {
-  private userInputEl: HTMLTextAreaElement | null = null
-  private sendButtonEl: HTMLElement | null = null
-
   private unhackSendBtnClickFn: VoidFunction = () => { }
   private unhackInputEventFn: VoidFunction = () => { }
   private hackSendBtnClickFn: VoidFunction = () => { }
@@ -113,34 +110,24 @@ export class EventManager {
    * 获取用户输入框元素
    */
   async getUserInputEl(): Promise<HTMLTextAreaElement> {
-    if (this.userInputEl) {
-      return this.userInputEl
-    }
-
     const element = await this.platformAdapter.getUserInputSelector()
     if (!element) {
       throw new Error('未找到用户输入框')
     }
 
-    this.userInputEl = element[0] as HTMLTextAreaElement
-    return this.userInputEl
+    return element[0] as HTMLTextAreaElement
   }
 
   /**
    * 获取发送按钮元素
    */
   async getSendButtonEl(): Promise<HTMLElement> {
-    if (this.sendButtonEl) {
-      return this.sendButtonEl
-    }
-
     const element = await this.platformAdapter.getSendButtonSelector()
     if (!element) {
       throw new Error('未找到发送按钮')
     }
 
-    this.sendButtonEl = element[0] as HTMLElement
-    return this.sendButtonEl
+    return element[0] as HTMLElement
   }
 
   /**
@@ -171,8 +158,6 @@ export class EventManager {
    * 释放资源
    */
   dispose(): void {
-    this.userInputEl = null
-    this.sendButtonEl = null
     /** 清理被拦截的事件 */
     EventInterceptor.dispose()
   }

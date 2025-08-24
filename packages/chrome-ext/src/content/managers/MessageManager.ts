@@ -113,14 +113,16 @@ export class MessageManager {
       this.messageObserver.disconnect()
     }
 
-    const sendingSelecor = await this.platformAdapter.getObserveSendingSelector()
-    if (!sendingSelecor?.length) {
+    const sendingSelector = await this.platformAdapter.getObserveSendingSelector()
+    if (!sendingSelector?.length) {
       throw new Error('未找到监听发送中按钮')
     }
 
     const observer = new MutationObserver(callback)
-    observer.observe(sendingSelecor[0], {
+    observer.observe(sendingSelector[0], {
       attributes: true,
+      subtree: true,
+      childList: true,
     })
 
     this.messageObserver = observer
