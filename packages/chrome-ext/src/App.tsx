@@ -7,7 +7,7 @@ import { Checkbox } from '@/components/Checkbox'
 import { RecentActivity } from '@/components/RecentActivity'
 import { SettingsPage } from '@/components/SettingsPage'
 import { StatusIndicator } from '@/components/StatusIndicator'
-import { DEFAULT_CONNECTION_CONFIG } from '@/config'
+import { DEFAULT_AGENT_ENABLED, DEFAULT_CONNECTION_CONFIG } from '@/config'
 import { ChromeStorage } from '@/utils'
 import { useConnectionPolling, useTheme } from './hooks'
 
@@ -22,9 +22,30 @@ const recentActivities: ActivityItem[] = [
 export default function App() {
   useTheme()
 
-  const [agentEnabled, setAgentEnabled] = useState(true)
+  const [agentEnabled, setAgentEnabled] = useState(DEFAULT_AGENT_ENABLED)
   const [currentPage, setCurrentPage] = useState<'main' | 'settings'>('main')
   const [connectionConfig, setConnectionConfig] = useState<ConnectionConfig>(DEFAULT_CONNECTION_CONFIG)
+
+  /** 处理启用/禁用状态变化 */
+  const handleAgentEnabledChange = async (enabled: boolean) => {
+    setAgentEnabled(enabled)
+
+    /** 保存到存储 */
+    await ChromeStorage.setAgentEnabled(enabled)
+
+    /** 发送消息给 content scripts */
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]?.id) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          type: enabled
+            ? 'agent.enable'
+            : 'agent.disable',
+          data: { enabled },
+          timestamp: Date.now(),
+        })
+      }
+    })
+  }
 
   /** 使用连接状态轮询 Hook */
   const {
@@ -44,9 +65,20 @@ export default function App() {
     }
   }
 
-  /** 加载连接配置 */
+  const loadAgentEnabled = async () => {
+    try {
+      const enabled = await ChromeStorage.getAgentEnabled()
+      setAgentEnabled(enabled)
+    }
+    catch (error) {
+      console.error('加载 Agent 启用状态失败:', error)
+    }
+  }
+
+  /** 加载配置 */
   useEffect(() => {
     loadConnectionConfig()
+    loadAgentEnabled()
   }, [])
 
   /** 设置页面 */
@@ -77,7 +109,13 @@ export default function App() {
               <h1 className="text-lg text-gray-800 font-bold dark:text-white">Nexus Agent</h1>
             </div>
             <div className="flex items-center gap-2">
-              <StatusIndicator status={ connectionStatus } showText={ false } size="sm" />
+              <StatusIndicator
+                status={ agentEnabled
+                  ? 'connected'
+                  : 'disconnected' }
+                showText={ false }
+                size="sm"
+              />
               <span className="text-xs text-gray-600 dark:text-gray-300">
                 { agentEnabled
                   ? '启用'
@@ -85,7 +123,7 @@ export default function App() {
               </span>
               <Checkbox
                 checked={ agentEnabled }
-                onChange={ setAgentEnabled }
+                onChange={ handleAgentEnabledChange }
                 size={ 20 }
               />
             </div>

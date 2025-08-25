@@ -38,6 +38,9 @@ export type MessageType
     | 'webRequest.onCompleted'
     | 'webRequest.onErrorOccurred'
     | 'webRequest.onBeforeRedirect'
+    /** 插件状态相关消息类型 */
+    | 'agent.enable'
+    | 'agent.disable'
 
 /**
  * 消息通信类型

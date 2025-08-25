@@ -1,5 +1,5 @@
 import type { DangerousTool, ToolPermissions } from '@/config'
-import { CONNECTION_CONFIG_KEY, DEFAULT_CONNECTION_CONFIG, DEFAULT_TOOL_PERMISSIONS, STORAGE_KEYS } from '@/config'
+import { AGENT_ENABLED_KEY, CONNECTION_CONFIG_KEY, DEFAULT_AGENT_ENABLED, DEFAULT_CONNECTION_CONFIG, DEFAULT_TOOL_PERMISSIONS, STORAGE_KEYS } from '@/config'
 
 /**
  * Chrome 存储管理工具
@@ -114,6 +114,34 @@ export class ChromeStorage {
     }
     catch (error) {
       console.error('保存连接配置失败:', error)
+    }
+  }
+
+  /**
+   * 获取 Agent 启用状态
+   */
+  static async getAgentEnabled(): Promise<boolean> {
+    try {
+      const result = await chrome.storage.sync.get(AGENT_ENABLED_KEY)
+      return result[AGENT_ENABLED_KEY] ?? DEFAULT_AGENT_ENABLED
+    }
+    catch (error) {
+      console.error('获取 Agent 启用状态失败:', error)
+      return DEFAULT_AGENT_ENABLED
+    }
+  }
+
+  /**
+   * 保存 Agent 启用状态
+   */
+  static async setAgentEnabled(enabled: boolean): Promise<void> {
+    try {
+      await chrome.storage.sync.set({
+        [AGENT_ENABLED_KEY]: enabled,
+      })
+    }
+    catch (error) {
+      console.error('保存 Agent 启用状态失败:', error)
     }
   }
 

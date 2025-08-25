@@ -218,18 +218,29 @@ export class EventInterceptor {
   }
 
   /**
-   * 清理所有资源，包括事件监听器记录和被拦截的事件
+   * 实例级别的清理方法
+   */
+  dispose(): void {
+    /** 清理所有被拦截的事件 */
+    this.clearInterceptedEvents()
+
+    /** 清理事件监听器记录 */
+    this.clearEventListenerRecords()
+
+    /** 清空内部状态 */
+    this.eventListeners.clear()
+    this.interceptedListeners.clear()
+  }
+
+  /**
+   * 静态清理方法，清理全局资源
    */
   static dispose(): void {
     if (EventInterceptor.instance) {
       const target = EventInterceptor.instance
 
-      /** 清理所有被拦截的事件 */
-      target.clearInterceptedEvents()
-
-      /** 清理事件监听器记录 */
-      target.eventListeners.clear()
-      target.interceptedListeners.clear()
+      /** 调用实例级别的清理 */
+      target.dispose()
 
       /** 恢复原始的 addEventListener 方法 */
       EventTarget.prototype.addEventListener = originalAddEventListener
