@@ -71,7 +71,7 @@ export class ToolExecutor {
    * @param workspaceRoot 默认是当前工作目录
    */
   constructor(workspaceRoot?: string) {
-    this.workspaceRoot = workspaceRoot || process.cwd()
+    this.workspaceRoot = workspaceRoot || process.cwd?.()
     this.fileTools = new FileTools(this.workspaceRoot)
     this.contentTools = new ContentTools(this.workspaceRoot)
     this.systemTools = new SystemTools()
@@ -226,7 +226,7 @@ export class ToolExecutor {
 
       /** 系统信息工具 */
       case 'get_system_info':
-        result = await this.systemTools.getSystemInfo()
+        result = JSON.stringify(await this.systemTools.getSystemInfo())
         break
 
       case 'get_env_variable':

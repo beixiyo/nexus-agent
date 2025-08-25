@@ -29,10 +29,10 @@ describe('命令执行工具测试', () => {
 
     if (platform === 'win32') {
       command = 'cd'
-      expectedContent = process.cwd()
+      expectedContent = process.cwd?.()
     } else {
       command = 'pwd'
-      expectedContent = process.cwd()
+      expectedContent = process.cwd?.()
     }
 
     const result = await commandTools.runCommand(command)

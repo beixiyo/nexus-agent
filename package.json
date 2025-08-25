@@ -9,6 +9,7 @@
     "ext:build": "pnpm --filter nexus-agent build",
     "serve:dev": "pnpm --filter @jl-org/nexus-agent dev",
     "serve:build": "pnpm --filter @jl-org/nexus-agent build",
+    "serve:test": "pnpm --filter @jl-org/nexus-agent test",
     "---lint---": "---lint---",
     "lint:nexus": "pnpm --filter nexus-agent lint",
     "lint:agent": "pnpm --filter @jl-org/nexus-agent lint",

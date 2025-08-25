@@ -27,8 +27,7 @@ describe('系统工具测试', () => {
   })
 
   test('应该能够获取系统信息', async () => {
-    const result = await systemTools.getSystemInfo()
-    const systemInfo = JSON.parse(result)
+    const systemInfo = await systemTools.getSystemInfo()
 
     // 验证系统信息的基本结构
     assert.ok(systemInfo.platform, '平台信息应该存在')
@@ -50,16 +49,14 @@ describe('系统工具测试', () => {
   })
 
   test('系统信息应该包含有效的平台信息', async () => {
-    const result = await systemTools.getSystemInfo()
-    const systemInfo = JSON.parse(result)
+    const systemInfo = await systemTools.getSystemInfo()
 
     const validPlatforms = ['win32', 'darwin', 'linux', 'freebsd', 'openbsd', 'sunos', 'aix', 'android']
     assert.ok(validPlatforms.includes(systemInfo.platform), `平台 ${systemInfo.platform} 应该是有效平台`)
   })
 
   test('系统信息应该包含有效的架构信息', async () => {
-    const result = await systemTools.getSystemInfo()
-    const systemInfo = JSON.parse(result)
+    const systemInfo = await systemTools.getSystemInfo()
 
     const validArchs = ['arm', 'arm64', 'ia32', 'mips', 'mipsel', 'ppc', 'ppc64', 's390', 's390x', 'x32', 'x64']
     assert.ok(validArchs.includes(systemInfo.arch), `架构 ${systemInfo.arch} 应该是有效架构`)
@@ -133,8 +130,7 @@ describe('系统工具测试', () => {
   })
 
   test('系统信息的内存使用应该合理', async () => {
-    const result = await systemTools.getSystemInfo()
-    const systemInfo = JSON.parse(result)
+    const systemInfo = await systemTools.getSystemInfo()
 
     // 验证内存使用的合理性
     const { total, free, used } = systemInfo.memory
@@ -148,15 +144,13 @@ describe('系统工具测试', () => {
   })
 
   test('系统运行时间应该是正数', async () => {
-    const result = await systemTools.getSystemInfo()
-    const systemInfo = JSON.parse(result)
+    const systemInfo = await systemTools.getSystemInfo()
 
     assert.ok(systemInfo.uptime >= 0, '系统运行时间应该是非负数')
   })
 
   test('当前工作目录应该是绝对路径', async () => {
-    const result = await systemTools.getSystemInfo()
-    const systemInfo = JSON.parse(result)
+    const systemInfo = await systemTools.getSystemInfo()
 
     assert.ok(systemInfo.cwd.startsWith('/') || systemInfo.cwd.match(/^[A-Z]:\\/), '当前工作目录应该是绝对路径')
   })

@@ -21,7 +21,7 @@ export class FileTools {
   /**
    * @param workspaceRoot 工作目录，默认为当前工作目录
    */
-  constructor(private workspaceRoot = process.cwd()) { }
+  constructor(private workspaceRoot = process.cwd?.()) { }
 
   /**
    * 写入文件，相对于配置的工作目录

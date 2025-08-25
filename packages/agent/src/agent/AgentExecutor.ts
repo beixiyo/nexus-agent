@@ -17,7 +17,7 @@ export class AgentExecutor {
   constructor(options: AgentOptions = {}) {
     this.options = {
       debug: false,
-      workspaceRoot: process.cwd(),
+      workspaceRoot: process.cwd?.(),
       ...options,
     }
     this.executor = new ToolExecutor(this.options.workspaceRoot)

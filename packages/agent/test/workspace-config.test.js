@@ -50,7 +50,7 @@ describe('工作目录配置测试', () => {
     }
   })
 
-  test('应该使用默认工作目录 (process.cwd())', async () => {
+  test('应该使用默认工作目录 (process.cwd?.())', async () => {
     const agent = new AgentExecutor({ debug: false })
 
     const xmlContent = `
@@ -73,7 +73,7 @@ describe('工作目录配置测试', () => {
     await agent.process(xmlContent)
 
     // 验证文件在默认工作目录中创建
-    const filePath = resolve(process.cwd(), testFile)
+    const filePath = resolve(process.cwd?.(), testFile)
     assert.ok(existsSync(filePath), '文件应该存在')
     assert.strictEqual(readFileSync(filePath, 'utf8'), testContent, '文件内容应该正确')
 

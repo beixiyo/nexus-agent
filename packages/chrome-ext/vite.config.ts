@@ -23,6 +23,10 @@ export default defineConfig({
       editor: 'cursor',
     }),
   ],
+  define: {
+    'process.env': {},
+    'process.cwd': () => '',
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -53,6 +57,7 @@ function ignoreNode(): Plugin {
     'events',
     'http',
     'https',
+    'process',
     /** 如果遇到更多模块报错，继续在这里添加 */
   ]
 
@@ -162,6 +167,7 @@ function ignoreNode(): Plugin {
     events: ['EventEmitter', 'once', 'on'],
     http: ['createServer', 'request', 'get', 'Agent', 'IncomingMessage', 'ServerResponse'],
     https: ['createServer', 'request', 'get', 'Agent'],
+    process: ['env', 'cwd', 'argv'],
   }
 
   return {

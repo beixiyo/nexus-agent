@@ -19,7 +19,7 @@ describe('文件内容替换测试', () => {
   let executor
 
   beforeEach(() => {
-    testFilePath = resolve(process.cwd(), targetFilePath)
+    testFilePath = resolve(process.cwd?.(), targetFilePath)
     executor = new ToolExecutor()
 
     // 测试前准备

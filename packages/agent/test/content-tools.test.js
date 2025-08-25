@@ -20,7 +20,7 @@ describe('内容处理工具测试', () => {
 
   afterEach(() => {
     // 清理测试文件
-    const fullPath = resolve(process.cwd(), testFile)
+    const fullPath = resolve(process.cwd?.(), testFile)
     if (existsSync(fullPath)) {
       unlinkSync(fullPath)
     }
@@ -36,7 +36,7 @@ describe('内容处理工具测试', () => {
 
     assert.ok(result.includes('成功追加内容到文件'), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testFile)
+    const fullPath = resolve(process.cwd?.(), testFile)
     const finalContent = readFileSync(fullPath, 'utf8')
     assert.strictEqual(finalContent, initialContent + appendContent, '文件内容应该正确追加')
   })
@@ -56,7 +56,7 @@ describe('内容处理工具测试', () => {
 
     assert.ok(result.includes('成功在位置 0 插入内容到文件'), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testFile)
+    const fullPath = resolve(process.cwd?.(), testFile)
     const finalContent = readFileSync(fullPath, 'utf8')
     assert.strictEqual(finalContent, insertContent + initialContent, '内容应该插入到开头')
   })
@@ -72,7 +72,7 @@ describe('内容处理工具测试', () => {
 
     assert.ok(result.includes(`成功在位置 ${insertPosition} 插入内容到文件`), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testFile)
+    const fullPath = resolve(process.cwd?.(), testFile)
     const finalContent = readFileSync(fullPath, 'utf8')
     const expectedContent = initialContent.slice(0, insertPosition) + insertContent + initialContent.slice(insertPosition)
     assert.strictEqual(finalContent, expectedContent, '内容应该插入到指定位置')
@@ -89,7 +89,7 @@ describe('内容处理工具测试', () => {
 
     assert.ok(result.includes(`成功在位置 ${insertPosition} 插入内容到文件`), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testFile)
+    const fullPath = resolve(process.cwd?.(), testFile)
     const finalContent = readFileSync(fullPath, 'utf8')
     assert.strictEqual(finalContent, initialContent + insertContent, '内容应该插入到末尾')
   })
@@ -128,7 +128,7 @@ describe('内容处理工具测试', () => {
 
     assert.ok(result.includes('成功在位置 0 插入内容到文件'), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testFile)
+    const fullPath = resolve(process.cwd?.(), testFile)
     const finalContent = readFileSync(fullPath, 'utf8')
     assert.strictEqual(finalContent, initialContent, '空内容插入不应该改变文件内容')
   })
@@ -142,7 +142,7 @@ describe('内容处理工具测试', () => {
 
     assert.ok(result.includes('成功追加内容到文件'), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testFile)
+    const fullPath = resolve(process.cwd?.(), testFile)
     const finalContent = readFileSync(fullPath, 'utf8')
     assert.strictEqual(finalContent, initialContent, '空内容追加不应该改变文件内容')
   })
@@ -158,7 +158,7 @@ describe('内容处理工具测试', () => {
 
     assert.ok(result.includes('成功替换文件内容'), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testFile)
+    const fullPath = resolve(process.cwd?.(), testFile)
     const updatedContent = readFileSync(fullPath, 'utf8')
     assert.ok(updatedContent.includes(newContent), '文件应该包含新内容')
     assert.ok(!updatedContent.includes(oldContent), '文件不应该包含旧内容')
@@ -188,7 +188,7 @@ describe('内容处理工具测试', () => {
 
     assert.ok(result.includes('成功替换文件内容'), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testFile)
+    const fullPath = resolve(process.cwd?.(), testFile)
     const updatedContent = readFileSync(fullPath, 'utf8')
     assert.ok(!updatedContent.includes('Hello'), '空内容替换应该移除旧内容')
   })

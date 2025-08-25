@@ -3,9 +3,10 @@ import { Message } from '@/components'
 import { DEFAULT_AGENT_ENABLED } from '@/config'
 import { ListenApi } from '@/config/listenApi'
 import { ChromeStorage, runScript } from '@/utils'
-
 import { Log } from '@/utils/Logger'
+
 import { AiStudioGeminiAgent } from './agent'
+import '@/config/prompt'
 
 let agent: AiStudioGeminiAgent | null = null
 let isAgentEnabled = DEFAULT_AGENT_ENABLED

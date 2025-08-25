@@ -9,7 +9,7 @@ import { errorHandler } from './middleware/errorHandler'
 import { agentRouter } from './routes/agent'
 
 const app = new Hono()
-SERVER_CONFIG.workspaceRoot = process.env.WORKSPACE_ROOT || process.argv[2] || process.cwd()
+SERVER_CONFIG.workspaceRoot = process.env.WORKSPACE_ROOT || process.argv[2] || process.cwd?.()
 
 registerMiddlewares()
 registerRoutes()

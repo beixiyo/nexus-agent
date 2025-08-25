@@ -172,6 +172,7 @@ export interface FileInfo {
  * 系统信息接口
  */
 export interface SystemInfo {
+  workspaceRoot: string
   platform: string
   arch: string
   nodeVersion: string
@@ -269,7 +270,7 @@ export interface AgentOptions {
   debug?: boolean
   /**
    * 工作目录，默认是当前工作目录
-   * @default process.cwd()
+   * @default process.cwd?.()
    */
   workspaceRoot?: string
 }

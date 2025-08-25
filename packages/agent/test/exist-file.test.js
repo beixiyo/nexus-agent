@@ -14,8 +14,8 @@ import { ToolExecutor } from '../dist/index.js'
 describe('文件和目录创建测试', () => {
   afterEach(() => {
     // 清理测试文件和目录
-    const fullPath = resolve(process.cwd(), 'llm-example/test-dir/test-file.txt')
-    const dirPath = resolve(process.cwd(), 'llm-example/test-dir')
+    const fullPath = resolve(process.cwd?.(), 'llm-example/test-dir/test-file.txt')
+    const dirPath = resolve(process.cwd?.(), 'llm-example/test-dir')
 
     if (existsSync(fullPath)) {
       unlinkSync(fullPath)
@@ -53,7 +53,7 @@ describe('文件和目录创建测试', () => {
     assert.strictEqual(result.length, 1)
 
     // 检查文件是否创建成功
-    const fullPath = resolve(process.cwd(), 'llm-example/test-dir/test-file.txt')
+    const fullPath = resolve(process.cwd?.(), 'llm-example/test-dir/test-file.txt')
     assert.ok(existsSync(fullPath), '文件应该被成功创建')
   })
 })

@@ -38,8 +38,8 @@ describe('文件操作工具测试', () => {
 
   afterEach(() => {
     // 清理测试文件和目录
-    const fullTestFile = resolve(process.cwd(), testFile)
-    const fullTestDir = resolve(process.cwd(), testDir)
+    const fullTestFile = resolve(process.cwd?.(), testFile)
+    const fullTestDir = resolve(process.cwd?.(), testDir)
 
     if (existsSync(fullTestFile)) {
       unlinkSync(fullTestFile)
@@ -55,7 +55,7 @@ describe('文件操作工具测试', () => {
 
     assert.ok(result.includes('成功写入文件'), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testFile)
+    const fullPath = resolve(process.cwd?.(), testFile)
     assert.ok(existsSync(fullPath), '文件应该被创建')
 
     const content = readFileSync(fullPath, 'utf8')
@@ -92,7 +92,7 @@ describe('文件操作工具测试', () => {
     const result = await fileTools.deleteFile(testFile)
     assert.ok(result.includes('成功删除文件'), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testFile)
+    const fullPath = resolve(process.cwd?.(), testFile)
     assert.ok(!existsSync(fullPath), '文件应该被删除')
   })
 
@@ -110,7 +110,7 @@ describe('文件操作工具测试', () => {
 
     assert.ok(result.includes('成功复制文件'), '应该返回成功消息')
 
-    const targetPath = resolve(process.cwd(), targetFile)
+    const targetPath = resolve(process.cwd?.(), targetFile)
     assert.ok(existsSync(targetPath), '目标文件应该存在')
 
     const copiedContent = readFileSync(targetPath, 'utf8')
@@ -131,8 +131,8 @@ describe('文件操作工具测试', () => {
 
     assert.ok(result.includes('成功移动文件'), '应该返回成功消息')
 
-    const sourcePath = resolve(process.cwd(), testFile)
-    const targetPath = resolve(process.cwd(), targetFile)
+    const sourcePath = resolve(process.cwd?.(), testFile)
+    const targetPath = resolve(process.cwd?.(), targetFile)
 
     assert.ok(!existsSync(sourcePath), '源文件应该不存在')
     assert.ok(existsSync(targetPath), '目标文件应该存在')
@@ -145,7 +145,7 @@ describe('文件操作工具测试', () => {
     const result = await fileTools.createDirectory(testDir)
     assert.ok(result.includes('成功创建目录'), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testDir)
+    const fullPath = resolve(process.cwd?.(), testDir)
     assert.ok(existsSync(fullPath), '目录应该被创建')
   })
 
@@ -164,7 +164,7 @@ describe('文件操作工具测试', () => {
     const result = await fileTools.deleteDirectory(testDir)
     assert.ok(result.includes('成功删除目录'), '应该返回成功消息')
 
-    const fullPath = resolve(process.cwd(), testDir)
+    const fullPath = resolve(process.cwd?.(), testDir)
     assert.ok(!existsSync(fullPath), '目录应该被删除')
   })
 

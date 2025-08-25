@@ -9,7 +9,7 @@ export class ContentTools {
   /**
    * @param workspaceRoot 工作目录，默认为当前工作目录
    */
-  constructor(private workspaceRoot = process.cwd()) { }
+  constructor(private workspaceRoot = process.cwd?.()) { }
 
   /**
    * 追加内容到文件

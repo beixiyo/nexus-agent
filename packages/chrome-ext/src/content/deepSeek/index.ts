@@ -5,6 +5,7 @@ import { ListenApi } from '@/config/listenApi'
 import { ChromeStorage, runScript } from '@/utils'
 import { Log } from '@/utils/Logger'
 import { DeepSeekAgent } from './agent'
+import '@/config/prompt'
 
 let agent: DeepSeekAgent | null = null
 let isAgentEnabled = DEFAULT_AGENT_ENABLED
