@@ -1,6 +1,6 @@
-import type { ActivityItem } from '@/types'
+import type { ActivityItem, Status } from '@/types'
 import type { ConnectionConfig } from '@/utils'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { AgentStatus } from '@/components/AgentStatus'
 import { Card } from '@/components/Card'
 import { Checkbox } from '@/components/Checkbox'
@@ -43,12 +43,26 @@ export default function App() {
     })
   }
 
+  /** 处理连接状态变化 */
+  const handleConnectionStatusChange = useCallback((status: Status, error: string) => {
+    /** 发送连接状态变化消息给 content scripts */
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]?.id) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          type: 'connection.status.change',
+          data: { status, error },
+          timestamp: Date.now(),
+        })
+      }
+    })
+  }, [])
+
   /** 使用连接状态轮询 Hook */
   const {
     status: connectionStatus,
     lastChecked,
     error: _connectionError,
-  } = useConnectionPolling(connectionConfig.serverUrl, 5000, agentEnabled)
+  } = useConnectionPolling(connectionConfig.serverUrl, 5000, agentEnabled, handleConnectionStatusChange)
 
   const loadConnectionConfig = async () => {
     try {

@@ -7,11 +7,13 @@ import { checkConnectionStatus } from '@/utils'
  * @param serverUrl 服务器地址
  * @param interval 轮询间隔（毫秒），默认 5000ms
  * @param enabled 是否启用轮询
+ * @param onStatusChange 连接状态变化时的回调函数
  */
 export function useConnectionPolling(
   serverUrl: string,
   interval: number = 5000,
   enabled: boolean = true,
+  onStatusChange?: (status: Status, error: string) => void,
 ) {
   const [status, setStatus] = useState<Status>('disconnected')
   const [lastChecked, setLastChecked] = useState<number>(0)
@@ -21,8 +23,14 @@ export function useConnectionPolling(
   /** 检查连接状态 */
   const checkStatus = useCallback(async () => {
     if (!serverUrl.trim()) {
-      setStatus('disconnected')
-      setError('未配置服务器地址')
+      const newStatus: Status = 'disconnected'
+      const newError = '未配置服务器地址'
+
+      if (newStatus !== status) {
+        setStatus(newStatus)
+        setError(newError)
+        onStatusChange?.(newStatus, newError)
+      }
       setLastChecked(Date.now())
       return
     }
@@ -30,23 +38,28 @@ export function useConnectionPolling(
     try {
       const result = await checkConnectionStatus()
       const newStatus = result.status as Status
+      const newError = result.error || ''
 
       /** 只有当状态发生变化时才更新 */
       if (newStatus !== status) {
         setStatus(newStatus)
-        setError(result.error || '')
+        setError(newError)
+        onStatusChange?.(newStatus, newError)
       }
       setLastChecked(result.lastChecked)
     }
     catch (err: any) {
       const errorStatus: Status = 'error'
+      const newError = err.message || '连接检查失败'
+
       if (errorStatus !== status) {
         setStatus(errorStatus)
-        setError(err.message || '连接检查失败')
+        setError(newError)
+        onStatusChange?.(errorStatus, newError)
       }
       setLastChecked(Date.now())
     }
-  }, [serverUrl, status])
+  }, [serverUrl, status, onStatusChange])
 
   /** 启动轮询 */
   const startPolling = useCallback(() => {

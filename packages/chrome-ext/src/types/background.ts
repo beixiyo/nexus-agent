@@ -41,6 +41,7 @@ export type MessageType
     /** 插件状态相关消息类型 */
     | 'agent.enable'
     | 'agent.disable'
+    | 'connection.status.change'
 
 /**
  * 消息通信类型

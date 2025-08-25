@@ -27,6 +27,14 @@ chrome.runtime.onMessage.addListener((message: MessageData) => {
     const enabled = message.type === 'agent.enable'
     handleAgentStateChange(enabled)
   }
+
+  /** 监听连接状态变化消息 */
+  if (message.type === 'connection.status.change') {
+    const { status, error } = message.data
+    if (status === 'error' || status === 'disconnected') {
+      Message.error(`Nexus Agent 连接失败: ${error}`)
+    }
+  }
 })
 
 /** 初始化时检查存储的状态 */
