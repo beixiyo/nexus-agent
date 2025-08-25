@@ -29,7 +29,7 @@ async function main() {
   }
 
   const xmlFilePath = args[0]
-  const workspaceRoot = args[1] // 可选的工作目录参数
+  const workspaceRoot = process.env.WORKSPACE_ROOT || args[1] // 可选的工作目录参数
 
   try {
     Log.info(`读取 XML 文件: ${xmlFilePath}`)

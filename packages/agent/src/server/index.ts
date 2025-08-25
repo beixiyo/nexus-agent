@@ -3,18 +3,21 @@ import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
-import { Log } from '@/utils'
+import { Log } from '../utils'
 import { SERVER_CONFIG } from './config'
 import { errorHandler } from './middleware/errorHandler'
-import { agentRouter } from './routes/agent'
 
 const app = new Hono()
 SERVER_CONFIG.workspaceRoot = process.env.WORKSPACE_ROOT || process.argv[2] || process.cwd?.()
 
-registerMiddlewares()
-registerRoutes()
-extraHandlers()
-startServer()
+main()
+
+async function main() {
+  registerMiddlewares()
+  await registerRoutes()
+  extraHandlers()
+  startServer()
+}
 
 function startServer() {
   Log.success(`🚀 Agent 服务器运行在 http://localhost:${SERVER_CONFIG.port}`)
@@ -25,7 +28,8 @@ function startServer() {
   })
 }
 
-function registerRoutes() {
+async function registerRoutes() {
+  const { agentRouter } = await import('./routes/agent')
   app.route('/api/agent', agentRouter)
   app.get('/api/health', (c) => {
     return c.json({

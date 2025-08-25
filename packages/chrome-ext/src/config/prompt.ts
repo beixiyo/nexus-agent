@@ -1,18 +1,3 @@
-import type { SystemInfo } from '@jl-org/nexus-agent'
-import { AgentApi } from '@/api/AgentApi'
-
-const agentInfo: SystemInfo = {
-  workspaceRoot: '未知',
-  platform: '未知',
-  cwd: '未知',
-} as SystemInfo
-
-AgentApi.getAgentInfo().then((res) => {
-  if (res.success) {
-    Object.assign(agentInfo, res.data)
-  }
-})
-
 /**
  * 将问题转换为任务 XML
  * @param question 问题
@@ -49,8 +34,6 @@ export function getPrompt(userTask = '') {
 ## 2. 环境与约束
 
 ### 2.1 运行环境
-- 工作目录：${agentInfo.workspaceRoot || '未知'}
-- 平台：${agentInfo.platform || '未知'}
 - 文件系统：你可以访问工作目录中的文件和子目录
 - 网络访问：你可以执行网络搜索和访问公开的网络资源
 - 系统命令：你可以执行系统命令，但需谨慎使用
@@ -507,10 +490,17 @@ export function getPrompt(userTask = '') {
 <tools>
 [
   {
-    "id": "1",
+    "id": "3",
     "name": "search_web",
     "parameters": {
       "query": "埃菲尔铁塔高度"
+    }
+  },
+  {
+    "id": "4",
+    "name": "read_file",
+    "parameters": {
+      "filePath": "C:/Code/FrontEnd/nexus-agent/README.md"
     }
   }
 ]
@@ -520,6 +510,10 @@ export function getPrompt(userTask = '') {
   {
     "id": "3",
     "result": "{\\n  \\"success\\": true,\\n  \\"data\\": \\"埃菲尔铁塔高度约为330米（包括天线），是巴黎的标志性建筑\\"\\n}"
+  },
+  {
+    "id": "4",
+    "result": "{\\n  \\"success\\": true,\\n  \\"data\\": \\"这是一个README文件\\"\\n}"
   }
 ]
 </tools_result>
@@ -536,7 +530,7 @@ export function getPrompt(userTask = '') {
 
 ### 7.2 工具使用
 - 根据任务需求选择最合适的工具
-- 为工具调用提供准确的参数
+- 为工具调用提供准确的参数，注意你传递的参数是被序列化的JSON字符串，所以你需要进行字符转译，比如反斜杠 \`\\\` 必须转译为 \`\\\\\`，引号 \`"\` 必须转译为 \`\\"\`，否则会导致解析错误
 - 处理工具调用可能的失败情况
 
 ### 7.3 结果处理

@@ -1,4 +1,5 @@
 import type { AgentOptions } from './types'
+import { SERVER_CONFIG } from '@/server/config'
 import { Log } from '@/utils'
 import { ToolExecutor } from './ToolExecutor'
 import { parseXMLResponse } from './XMLStateMachineParser'
@@ -17,7 +18,7 @@ export class AgentExecutor {
   constructor(options: AgentOptions = {}) {
     this.options = {
       debug: false,
-      workspaceRoot: process.cwd?.(),
+      workspaceRoot: SERVER_CONFIG.workspaceRoot,
       ...options,
     }
     this.executor = new ToolExecutor(this.options.workspaceRoot)
