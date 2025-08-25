@@ -28,7 +28,7 @@ export class FileTools {
    */
   async writeFile(filePath: string, content: string): Promise<string> {
     const name: ToolName = 'write_file'
-    return `用户拒绝执行 ${name}`
+    // return `用户拒绝执行 ${name}`
 
     try {
       const fullPath = PathSecurityUtils.validatePath(this.workspaceRoot, filePath)
@@ -83,7 +83,7 @@ export class FileTools {
    */
   async deleteFile(filePath: string): Promise<string> {
     const name: ToolName = 'delete_file'
-    return `用户拒绝执行 ${name}`
+    // return `用户拒绝执行 ${name}`
 
     try {
       const fullPath = PathSecurityUtils.validatePath(this.workspaceRoot, filePath)
@@ -105,7 +105,7 @@ export class FileTools {
    */
   async copyFile(sourcePath: string, targetPath: string): Promise<string> {
     const name: ToolName = 'copy_file'
-    return `用户拒绝执行 ${name}`
+    // return `用户拒绝执行 ${name}`
 
     try {
       const fullSourcePath = PathSecurityUtils.validatePath(this.workspaceRoot, sourcePath)
@@ -133,7 +133,7 @@ export class FileTools {
    */
   async moveFile(sourcePath: string, targetPath: string): Promise<string> {
     const name: ToolName = 'move_file'
-    return `用户拒绝执行 ${name}`
+    // return `用户拒绝执行 ${name}`
 
     try {
       const fullSourcePath = PathSecurityUtils.validatePath(this.workspaceRoot, sourcePath)
@@ -161,7 +161,7 @@ export class FileTools {
    */
   async createDirectory(dirPath: string): Promise<string> {
     const name: ToolName = 'create_directory'
-    return `用户拒绝执行 ${name}`
+    // return `用户拒绝执行 ${name}`
 
     try {
       const fullPath = PathSecurityUtils.validatePath(this.workspaceRoot, dirPath)
@@ -183,7 +183,7 @@ export class FileTools {
    */
   async deleteDirectory(dirPath: string, recursive: boolean = false): Promise<string> {
     const name: ToolName = 'delete_directory'
-    return `用户拒绝执行 ${name}`
+    // return `用户拒绝执行 ${name}`
 
     try {
       const fullPath = PathSecurityUtils.validatePath(this.workspaceRoot, dirPath)

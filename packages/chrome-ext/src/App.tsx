@@ -11,13 +11,8 @@ import { DEFAULT_AGENT_ENABLED, DEFAULT_CONNECTION_CONFIG } from '@/config'
 import { ChromeStorage } from '@/utils'
 import { useConnectionPolling, useTheme } from './hooks'
 
-/** 最近活动数据 */
-const recentActivities: ActivityItem[] = [
-  { id: 1, type: 'file', action: '创建文件', target: 'test.txt', time: '1分钟前', status: 'success' },
-  { id: 2, type: 'web', action: '搜索网络', target: '天气', time: '3分钟前', status: 'success' },
-  { id: 3, type: 'file', action: '读取文件', target: 'config.json', time: '5分钟前', status: 'success' },
-  { id: 4, type: 'system', action: '获取系统信息', target: 'CPU 使用率', time: '8分钟前', status: 'error' },
-]
+/** 默认最近活动数据 - 空数组，只显示真实数据 */
+const defaultRecentActivities: ActivityItem[] = []
 
 export default function App() {
   useTheme()
@@ -25,6 +20,7 @@ export default function App() {
   const [agentEnabled, setAgentEnabled] = useState(DEFAULT_AGENT_ENABLED)
   const [currentPage, setCurrentPage] = useState<'main' | 'settings'>('main')
   const [connectionConfig, setConnectionConfig] = useState<ConnectionConfig>(DEFAULT_CONNECTION_CONFIG)
+  const [recentActivities, setRecentActivities] = useState<ActivityItem[]>(defaultRecentActivities)
 
   /** 处理启用/禁用状态变化 */
   const handleAgentEnabledChange = async (enabled: boolean) => {
@@ -75,10 +71,39 @@ export default function App() {
     }
   }
 
+  const loadRecentActivities = async () => {
+    try {
+      const activities = await ChromeStorage.getRecentActivities()
+      setRecentActivities(activities)
+    }
+    catch (error) {
+      console.error('加载最近活动记录失败:', error)
+    }
+  }
+
+  /** 监听存储变化，实时更新活动记录 */
+  useEffect(() => {
+    const handleStorageChange = (changes: { [key: string]: chrome.storage.StorageChange }) => {
+      if (changes.recentActivities) {
+        const newActivities = changes.recentActivities.newValue
+        if (newActivities && Array.isArray(newActivities)) {
+          setRecentActivities(newActivities)
+        }
+      }
+    }
+
+    chrome.storage.onChanged.addListener(handleStorageChange)
+
+    return () => {
+      chrome.storage.onChanged.removeListener(handleStorageChange)
+    }
+  }, [])
+
   /** 加载配置 */
   useEffect(() => {
     loadConnectionConfig()
     loadAgentEnabled()
+    loadRecentActivities()
   }, [])
 
   /** 设置页面 */
@@ -131,13 +156,13 @@ export default function App() {
 
           <AgentStatus
             connectionStatus={ connectionStatus }
-            lastActivity="2分钟前"
             lastChecked={ lastChecked }
             onOpenSettings={ () => setCurrentPage('settings') }
           />
 
           <RecentActivity
             activities={ recentActivities }
+            maxVisible={ 5 }
           />
 
           {/* Info section */ }

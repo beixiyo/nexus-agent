@@ -57,7 +57,7 @@ export class SystemTools {
    */
   async setEnvVariable(envName: string, value: string): Promise<string> {
     const name: ToolName = 'set_env_variable'
-    return `用户拒绝执行 ${name}`
+    // return `用户拒绝执行 ${name}`
 
     try {
       process.env[envName] = value

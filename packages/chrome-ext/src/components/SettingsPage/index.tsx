@@ -1,4 +1,5 @@
 import type { ConnectionConfig, ConnectionStatus } from '@/utils'
+import { timeGap } from '@jl-org/tool'
 import { ArrowLeft } from 'lucide-react'
 import { memo, useEffect, useState } from 'react'
 import { Button } from '@/components/Button'
@@ -119,23 +120,6 @@ export const SettingsPage = memo<SettingsPageProps>((props) => {
     }
   }
 
-  /** 格式化最后检查时间 */
-  const formatLastChecked = (timestamp: number): string => {
-    if (timestamp === 0)
-      return '未检查'
-
-    const now = Date.now()
-    const diff = now - timestamp
-
-    if (diff < 60000)
-      return '刚刚'
-    if (diff < 3600000)
-      return `${Math.floor(diff / 60000)}分钟前`
-    if (diff < 86400000)
-      return `${Math.floor(diff / 3600000)}小时前`
-    return `${Math.floor(diff / 86400000)}天前`
-  }
-
   return (
     <div className="max-w-xs min-w-[300px] w-full bg-gray-50 p-3 dark:bg-gray-900">
       <Card
@@ -183,7 +167,7 @@ export const SettingsPage = memo<SettingsPageProps>((props) => {
                 </span>
               </div>
               <span className="text-xs text-gray-500 dark:text-gray-400">
-                { formatLastChecked(lastChecked) }
+                { timeGap(lastChecked) }
               </span>
             </div>
 

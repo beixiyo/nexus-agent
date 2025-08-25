@@ -1,5 +1,7 @@
 import type { DangerousTool, ToolPermissions } from '@/config'
-import { AGENT_ENABLED_KEY, CONNECTION_CONFIG_KEY, DEFAULT_AGENT_ENABLED, DEFAULT_CONNECTION_CONFIG, DEFAULT_TOOL_PERMISSIONS, STORAGE_KEYS } from '@/config'
+import type { ActivityItem } from '@/types'
+import { formatDate } from '@jl-org/tool'
+import { AGENT_ENABLED_KEY, CONNECTION_CONFIG_KEY, DEFAULT_AGENT_ENABLED, DEFAULT_CONNECTION_CONFIG, DEFAULT_TOOL_PERMISSIONS, MAX_RECENT_ACTIVITIES, RECENT_ACTIVITIES_KEY, STORAGE_KEYS } from '@/config'
 
 /**
  * Chrome 存储管理工具
@@ -10,7 +12,7 @@ export class ChromeStorage {
    */
   static async getToolPermissions(): Promise<ToolPermissions> {
     try {
-      const result = await chrome.storage.sync.get(STORAGE_KEYS.TOOL_PERMISSIONS)
+      const result = await chrome.storage.local.get(STORAGE_KEYS.TOOL_PERMISSIONS)
       return result[STORAGE_KEYS.TOOL_PERMISSIONS] || DEFAULT_TOOL_PERMISSIONS
     }
     catch (error) {
@@ -31,7 +33,7 @@ export class ChromeStorage {
         lastUpdated: Date.now(),
       }
 
-      await chrome.storage.sync.set({
+      await chrome.storage.local.set({
         [STORAGE_KEYS.TOOL_PERMISSIONS]: updated,
       })
     }
@@ -88,7 +90,7 @@ export class ChromeStorage {
    */
   static async getConnectionConfig(): Promise<ConnectionConfig> {
     try {
-      const result = await chrome.storage.sync.get(CONNECTION_CONFIG_KEY)
+      const result = await chrome.storage.local.get(CONNECTION_CONFIG_KEY)
       return result[CONNECTION_CONFIG_KEY] || DEFAULT_CONNECTION_CONFIG
     }
     catch (error) {
@@ -108,7 +110,7 @@ export class ChromeStorage {
         ...config,
       }
 
-      await chrome.storage.sync.set({
+      await chrome.storage.local.set({
         [CONNECTION_CONFIG_KEY]: updated,
       })
     }
@@ -122,7 +124,7 @@ export class ChromeStorage {
    */
   static async getAgentEnabled(): Promise<boolean> {
     try {
-      const result = await chrome.storage.sync.get(AGENT_ENABLED_KEY)
+      const result = await chrome.storage.local.get(AGENT_ENABLED_KEY)
       return result[AGENT_ENABLED_KEY] ?? DEFAULT_AGENT_ENABLED
     }
     catch (error) {
@@ -136,7 +138,7 @@ export class ChromeStorage {
    */
   static async setAgentEnabled(enabled: boolean): Promise<void> {
     try {
-      await chrome.storage.sync.set({
+      await chrome.storage.local.set({
         [AGENT_ENABLED_KEY]: enabled,
       })
     }
@@ -146,11 +148,64 @@ export class ChromeStorage {
   }
 
   /**
+   * 获取最近活动记录
+   */
+  static async getRecentActivities(): Promise<ActivityItem[]> {
+    try {
+      const result = await chrome.storage.local.get(RECENT_ACTIVITIES_KEY)
+      return result[RECENT_ACTIVITIES_KEY] || []
+    }
+    catch (error) {
+      console.error('获取最近活动记录失败:', error)
+      return []
+    }
+  }
+
+  /**
+   * 添加活动记录
+   */
+  static async addActivity(activity: Omit<ActivityItem, 'id' | 'time'>): Promise<void> {
+    try {
+      const activities = await this.getRecentActivities()
+      const newActivity: ActivityItem = {
+        ...activity,
+        id: Date.now(),
+        time: formatDate('MM-dd HH:mm'),
+      }
+
+      /** 添加到开头，保持最新的在前面 */
+      activities.unshift(newActivity)
+
+      /** 限制记录数量 */
+      if (activities.length > MAX_RECENT_ACTIVITIES) {
+        activities.splice(MAX_RECENT_ACTIVITIES)
+      }
+
+      await chrome.storage.local.set({ [RECENT_ACTIVITIES_KEY]: activities })
+    }
+    catch (error) {
+      console.error('添加活动记录失败:', error)
+    }
+  }
+
+  /**
+   * 清除所有活动记录
+   */
+  static async clearRecentActivities(): Promise<void> {
+    try {
+      await chrome.storage.local.remove(RECENT_ACTIVITIES_KEY)
+    }
+    catch (error) {
+      console.error('清除活动记录失败:', error)
+    }
+  }
+
+  /**
    * 清除所有设置
    */
   static async clearAll(): Promise<void> {
     try {
-      await chrome.storage.sync.clear()
+      await chrome.storage.local.clear()
     }
     catch (error) {
       console.error('清除存储失败:', error)

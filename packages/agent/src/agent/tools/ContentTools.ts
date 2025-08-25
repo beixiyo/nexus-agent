@@ -16,7 +16,7 @@ export class ContentTools {
    */
   async appendFile(filePath: string, content: string): Promise<string> {
     const name: ToolName = 'append_file'
-    return `用户拒绝执行 ${name}`
+    // return `用户拒绝执行 ${name}`
 
     try {
       const fullPath = PathSecurityUtils.validatePath(this.workspaceRoot, filePath)
@@ -41,7 +41,7 @@ export class ContentTools {
    */
   async insertFileContent(filePath: string, position: number, content: string): Promise<string> {
     const name: ToolName = 'insert_file_content'
-    return `用户拒绝执行 ${name}`
+    // return `用户拒绝执行 ${name}`
 
     try {
       const fullPath = PathSecurityUtils.validatePath(this.workspaceRoot, filePath)
@@ -71,7 +71,7 @@ export class ContentTools {
    */
   async replaceFileContent(filePath: string, oldContent: string, newContent: string): Promise<string> {
     const name: ToolName = 'replace_file_content'
-    return `用户拒绝执行 ${name}`
+    // return `用户拒绝执行 ${name}`
 
     try {
       const fullPath = PathSecurityUtils.validatePath(this.workspaceRoot, filePath)

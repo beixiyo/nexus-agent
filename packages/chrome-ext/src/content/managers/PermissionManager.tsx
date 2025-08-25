@@ -3,8 +3,8 @@ import type { DangerousTool } from '@/config'
 import { AgentApi } from '@/api/AgentApi'
 import { Message } from '@/components'
 import { Modal } from '@/components/Modal'
+import { ActivityHelper, ChromeStorage } from '@/utils'
 import { Log } from '@/utils/Logger'
-import { ChromeStorage } from '@/utils/storage'
 import { detectDangerousTools } from '@/utils/toolDetector'
 import { DangerousToolsConfirm } from './DangerousToolsConfirm'
 import { XMLProcessor } from './XMLProcessor'
@@ -74,10 +74,22 @@ export class PermissionManager {
           if (res.data.result && res.data.result.length > 0) {
             allResults.push(...res.data.result)
           }
+
+          /** 记录成功的工具调用活动 */
+          const activities = ActivityHelper.createActivitiesFromTools(toolsToExecute, 'success')
+          for (const activity of activities) {
+            await ChromeStorage.addActivity(activity)
+          }
         }
         catch (error) {
           Log.error('Agent API 调用失败', error)
           Message.error('工具执行失败')
+
+          /** 记录失败的工具调用活动 */
+          const activities = ActivityHelper.createActivitiesFromTools(toolsToExecute, 'error')
+          for (const activity of activities) {
+            await ChromeStorage.addActivity(activity)
+          }
           return
         }
       }
@@ -98,10 +110,22 @@ export class PermissionManager {
         if (res.data.result && res.data.result.length > 0) {
           await sendServerResultToLLM(PermissionManager.toolsResultToXML(res.data.result))
         }
+
+        /** 记录成功的工具调用活动 */
+        const activities = ActivityHelper.createActivitiesFromTools(allTools, 'success')
+        for (const activity of activities) {
+          await ChromeStorage.addActivity(activity)
+        }
       }
       catch (error) {
         Log.error('Agent API 调用失败', error)
         Message.error('工具执行失败')
+
+        /** 记录失败的工具调用活动 */
+        const activities = ActivityHelper.createActivitiesFromTools(allTools, 'error')
+        for (const activity of activities) {
+          await ChromeStorage.addActivity(activity)
+        }
       }
     }
   }

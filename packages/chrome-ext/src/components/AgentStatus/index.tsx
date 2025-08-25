@@ -5,7 +5,6 @@ import { StatusIndicator } from '@/components/StatusIndicator'
 
 export interface AgentStatusProps {
   connectionStatus: Status
-  lastActivity: string
   lastChecked?: number
   onOpenSettings?: () => void
 }
@@ -13,7 +12,6 @@ export interface AgentStatusProps {
 export const AgentStatus = memo<AgentStatusProps>((props) => {
   const {
     connectionStatus,
-    lastActivity,
     lastChecked,
     onOpenSettings,
   } = props
@@ -38,12 +36,6 @@ export const AgentStatus = memo<AgentStatusProps>((props) => {
         <div className="flex items-center justify-between">
           <span className="text-xs text-gray-600 dark:text-gray-400">本地服务器:</span>
           <StatusIndicator status={ connectionStatus } size="xs" />
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-gray-600 dark:text-gray-400">最后活动:</span>
-          <span className="text-xs text-gray-800 font-medium dark:text-gray-200">
-            {lastActivity}
-          </span>
         </div>
         {lastChecked && (
           <div className="flex items-center justify-between">

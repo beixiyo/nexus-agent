@@ -1,3 +1,4 @@
+export * from './activityHelper'
 export * from './connect'
 export * from './createSuspenseData'
 export * from './EventInterceptor'

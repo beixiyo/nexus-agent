@@ -10,7 +10,7 @@ export class CommandTools {
    */
   async runCommand(command: string): Promise<string> {
     const name: ToolName = 'run_command'
-    return `用户拒绝执行 ${name}`
+    // return `用户拒绝执行 ${name}`
 
     try {
       const result = execSync(command, { encoding: 'utf8' })
