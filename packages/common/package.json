@@ -14,5 +14,7 @@
   },
   "scripts": {
     "build": "tsup"
-  }
+  },
+  "author": "CJL <2662442385@qq.com>",
+  "homepage": "https://github.com/beixiyo/nexus-agent"
 }
