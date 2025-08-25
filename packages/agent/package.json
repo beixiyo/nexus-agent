@@ -2,7 +2,7 @@
   "name": "@jl-org/nexus-agent",
   "version": "1.0.0",
   "description": "一个解析 LLM XML 输出并执行工具调用的 Agent",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.js",
   "type": "module",
   "types": "dist/index.d.ts",
@@ -27,7 +27,8 @@
     "lint": "eslint src --fix",
     "test": "pnpm build && node --test",
     "test:watch": "pnpm build && node --test --watch",
-    "test:coverage": "pnpm build && node --test --experimental-test-coverage"
+    "test:coverage": "pnpm build && node --test --experimental-test-coverage",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "llm",
