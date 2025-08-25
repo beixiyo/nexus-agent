@@ -9,9 +9,10 @@ export * from './state'
 export * from './timer'
 
 export * from './types'
+export * from './useConnectionPolling'
 export * from './useElBounding'
+
 export * from './useGetState'
 export * from './useStateWithPromise'
-
 export * from './useTheme'
 export * from './useWorker'

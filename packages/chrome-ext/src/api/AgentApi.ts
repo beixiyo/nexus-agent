@@ -1,4 +1,5 @@
 import type { Resp } from '@/types'
+import { DEFAULT_CONNECTION_CONFIG } from '@/config'
 import { http } from './instance'
 
 export class AgentApi {
@@ -8,13 +9,27 @@ export class AgentApi {
    * @returns 处理结果
    */
   static process(xmlContent: string): Promise<Resp<{ result: ToolResult[], timestamp: string }>> {
-    return http.post('/agent/process', {
-      xmlContent,
-    })
+    return http.post(
+      '/agent/process',
+      {
+        xmlContent,
+      },
+      {
+        baseUrl: `${DEFAULT_CONNECTION_CONFIG.serverUrl}/api`,
+      },
+    )
   }
 
   static info(): Promise<Resp<any>> {
-    return http.get('/agent/info')
+    return http.get('/agent/info', {
+      baseUrl: `${DEFAULT_CONNECTION_CONFIG.serverUrl}/api`,
+    })
+  }
+
+  static health(): Promise<Resp<any>> {
+    return http.get('/health', {
+      baseUrl: `${DEFAULT_CONNECTION_CONFIG.serverUrl}/api`,
+    })
   }
 }
 

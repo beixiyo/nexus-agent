@@ -1,10 +1,10 @@
 import type { DangerousTool, ToolPermissions } from '@/config'
-import { DEFAULT_TOOL_PERMISSIONS, STORAGE_KEYS } from '@/config'
+import { CONNECTION_CONFIG_KEY, DEFAULT_CONNECTION_CONFIG, DEFAULT_TOOL_PERMISSIONS, STORAGE_KEYS } from '@/config'
 
 /**
  * Chrome 存储管理工具
  */
-export class ToolStorage {
+export class ChromeStorage {
   /**
    * 获取工具权限设置
    */
@@ -84,6 +84,40 @@ export class ToolStorage {
   }
 
   /**
+   * 获取连接配置
+   */
+  static async getConnectionConfig(): Promise<ConnectionConfig> {
+    try {
+      const result = await chrome.storage.sync.get(CONNECTION_CONFIG_KEY)
+      return result[CONNECTION_CONFIG_KEY] || DEFAULT_CONNECTION_CONFIG
+    }
+    catch (error) {
+      console.error('获取连接配置失败:', error)
+      return DEFAULT_CONNECTION_CONFIG
+    }
+  }
+
+  /**
+   * 保存连接配置
+   */
+  static async setConnectionConfig(config: Partial<ConnectionConfig>): Promise<void> {
+    try {
+      const current = await this.getConnectionConfig()
+      const updated = {
+        ...current,
+        ...config,
+      }
+
+      await chrome.storage.sync.set({
+        [CONNECTION_CONFIG_KEY]: updated,
+      })
+    }
+    catch (error) {
+      console.error('保存连接配置失败:', error)
+    }
+  }
+
+  /**
    * 清除所有设置
    */
   static async clearAll(): Promise<void> {
@@ -94,4 +128,13 @@ export class ToolStorage {
       console.error('清除存储失败:', error)
     }
   }
+}
+
+/**
+ * 连接配置类型
+ */
+export interface ConnectionConfig {
+  serverUrl: string
+  timeout: number
+  retryCount: number
 }

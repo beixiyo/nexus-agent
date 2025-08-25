@@ -14,7 +14,7 @@ import {
   parseXMLResponse,
 } from '@jl-org/nexus-agent'
 import { DANGEROUS_TOOLS, TOOL_RISK_CONFIG, ToolRiskLevel } from '@/config'
-import { ToolStorage } from './storage'
+import { ChromeStorage } from './storage'
 
 /**
  * 检测 XML 响应中的危险工具
@@ -32,7 +32,7 @@ export async function detectDangerousTools(xmlContent: string): Promise<ToolCall
     )
 
     /** 检查用户权限设置 */
-    const autoConfirm = await ToolStorage.getAutoConfirm()
+    const autoConfirm = await ChromeStorage.getAutoConfirm()
     if (autoConfirm) {
       return []
     }
@@ -40,7 +40,7 @@ export async function detectDangerousTools(xmlContent: string): Promise<ToolCall
     /** 过滤掉已授权的工具 */
     const unauthorizedTools: ToolCall[] = []
     for (const tool of dangerousTools) {
-      const isAuthorized = await ToolStorage.isToolAuthorized(tool.name as DangerousTool)
+      const isAuthorized = await ChromeStorage.isToolAuthorized(tool.name as DangerousTool)
       if (!isAuthorized) {
         unauthorizedTools.push(tool)
       }

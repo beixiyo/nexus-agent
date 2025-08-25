@@ -18,7 +18,6 @@ export * from './Message'
 export * from './Modal'
 export * from './Notification'
 export * from './Popover'
-export * from './QuickActions'
 
 export * from './Radio'
 export * from './RecentActivity'
@@ -31,8 +30,6 @@ export * from './Slider'
 /** 自定义组件 */
 export * from './StatusIndicator'
 export * from './Tabs'
-
-export * from './TestComponent'
 export * from './Textarea'
 export * from './ToolPermissionsManager'
 export * from './Tooltip'

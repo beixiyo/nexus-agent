@@ -1,9 +1,10 @@
+import type { ToolPermissions } from '@/config'
 import { memo, useEffect, useState } from 'react'
-import { Checkbox } from '@/components/Checkbox'
 import { Button } from '@/components/Button'
 import { Card } from '@/components/Card'
-import { DANGEROUS_TOOLS, TOOL_RISK_CONFIG, ToolRiskLevel, type ToolPermissions } from '@/config'
-import { ToolStorage } from '@/utils'
+import { Checkbox } from '@/components/Checkbox'
+import { DANGEROUS_TOOLS, TOOL_RISK_CONFIG, ToolRiskLevel } from '@/config'
+import { ChromeStorage } from '@/utils'
 
 export const ToolPermissionsManager = memo(() => {
   const [permissions, setPermissions] = useState<ToolPermissions>({
@@ -20,7 +21,7 @@ export const ToolPermissionsManager = memo(() => {
 
   const loadPermissions = async () => {
     try {
-      const storedPermissions = await ToolStorage.getToolPermissions()
+      const storedPermissions = await ChromeStorage.getToolPermissions()
       setPermissions(storedPermissions)
     }
     catch (error) {
@@ -36,10 +37,10 @@ export const ToolPermissionsManager = memo(() => {
     const isAuthorized = permissions.authorizedTools.includes(toolName as any)
 
     if (isAuthorized) {
-      await ToolStorage.revokeToolAuthorization(toolName as any)
+      await ChromeStorage.revokeToolAuthorization(toolName as any)
     }
     else {
-      await ToolStorage.authorizeTool(toolName as any)
+      await ChromeStorage.authorizeTool(toolName as any)
     }
 
     await loadPermissions()
@@ -48,13 +49,13 @@ export const ToolPermissionsManager = memo(() => {
   /** 切换自动确认状态 */
   const toggleAutoConfirm = async () => {
     const newAutoConfirm = !permissions.autoConfirm
-    await ToolStorage.setAutoConfirm(newAutoConfirm)
+    await ChromeStorage.setAutoConfirm(newAutoConfirm)
     await loadPermissions()
   }
 
   /** 重置所有设置 */
   const resetAll = async () => {
-    await ToolStorage.clearAll()
+    await ChromeStorage.clearAll()
     await loadPermissions()
   }
 
@@ -100,10 +101,10 @@ export const ToolPermissionsManager = memo(() => {
       <Card className="w-full" shadow="sm" rounded="md" padding="sm">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium text-gray-800 dark:text-white">
+            <h3 className="text-sm text-gray-800 font-medium dark:text-white">
               🤖 自动确认
             </h3>
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+            <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">
               启用后，已授权的工具将自动执行，不再弹窗确认
             </p>
           </div>
@@ -118,31 +119,31 @@ export const ToolPermissionsManager = memo(() => {
       {/* 工具权限列表 */ }
       <Card className="w-full" shadow="sm" rounded="md" padding="sm">
         <div className="mb-3">
-          <h3 className="text-sm font-medium text-gray-800 dark:text-white">
+          <h3 className="text-sm text-gray-800 font-medium dark:text-white">
             🛠️ 工具权限管理
           </h3>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+          <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">
             勾选以下工具表示您同意其执行，将不再弹窗确认
           </p>
         </div>
 
         <div className="space-y-2">
-          { DANGEROUS_TOOLS.map(toolName => {
+          { DANGEROUS_TOOLS.map((toolName) => {
             const riskLevel = TOOL_RISK_CONFIG[toolName]
             const isAuthorized = permissions.authorizedTools.includes(toolName)
 
             return (
               <div
                 key={ toolName }
-                className="flex items-center justify-between p-2 border border-gray-200 rounded dark:border-gray-700"
+                className="flex items-center justify-between border border-gray-200 rounded p-2 dark:border-gray-700"
               >
                 <div className="flex items-center gap-2">
                   <span className="text-xs">{ getRiskIcon(riskLevel) }</span>
                   <div>
-                    <span className="text-xs font-medium text-gray-800 dark:text-white">
+                    <span className="text-xs text-gray-800 font-medium dark:text-white">
                       { toolName }
                     </span>
-                    <div className="flex items-center gap-2 mt-1">
+                    <div className="mt-1 flex items-center gap-2">
                       <span className="text-xs text-gray-500 dark:text-gray-400">
                         { getRiskText(riskLevel) }
                       </span>

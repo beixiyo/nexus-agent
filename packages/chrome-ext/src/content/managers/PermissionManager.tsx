@@ -4,7 +4,7 @@ import { AgentApi } from '@/api/AgentApi'
 import { Message } from '@/components'
 import { Modal } from '@/components/Modal'
 import { Log } from '@/utils/Logger'
-import { ToolStorage } from '@/utils/storage'
+import { ChromeStorage } from '@/utils/storage'
 import { detectDangerousTools } from '@/utils/toolDetector'
 import { DangerousToolsConfirm } from './DangerousToolsConfirm'
 import { XMLProcessor } from './XMLProcessor'
@@ -135,7 +135,7 @@ export class PermissionManager {
           /** 保存每个工具的自动确认设置 */
           for (const [toolName, autoConfirm] of Object.entries(toolAutoConfirmStates)) {
             if (autoConfirm) {
-              await ToolStorage.authorizeTool(toolName as DangerousTool)
+              await ChromeStorage.authorizeTool(toolName as DangerousTool)
               Log.info(`用户授权了工具: ${toolName}`)
             }
           }

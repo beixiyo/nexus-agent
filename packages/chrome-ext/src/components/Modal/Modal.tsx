@@ -1,10 +1,10 @@
 'use client'
 
 import type { ModalProps, ModalRef, ModelType } from './types'
-import { cn } from '@/utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { createPortal } from 'react-dom'
+import { cn } from '@/utils'
 import { Mask } from '../Mask'
 import { DURATION, variantStyles } from './constants'
 import { extendModal } from './extendModal'

@@ -27,6 +27,12 @@ function startServer() {
 
 function registerRoutes() {
   app.route('/api/agent', agentRouter)
+  app.get('/api/health', (c) => {
+    return c.json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+    })
+  })
 }
 
 function registerMiddlewares() {

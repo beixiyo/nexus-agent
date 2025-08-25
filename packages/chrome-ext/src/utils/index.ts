@@ -1,3 +1,4 @@
+export * from './connect'
 export * from './createSuspenseData'
 export * from './EventInterceptor'
 export * from './reactTool'
