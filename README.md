@@ -33,7 +33,7 @@
 
 #### 开发者模式安装
 
-1. 下载插件文件：[Nexus Agent Extension](https://github.com/your-username/nexus-agent/releases/latest/download/nexus-agent-extension.zip)
+1. 下载插件文件：[Nexus Agent Extension](https://github.com/beixiyo/nexus-agent/releases/tag/v1.0.0)
 2. 解压下载的文件
 3. 打开 Chrome 浏览器，进入 `chrome://extensions/`
 4. 开启右上角的 **"开发者模式"**
