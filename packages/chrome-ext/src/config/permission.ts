@@ -1,4 +1,4 @@
-import type { ToolName } from '@jl-org/nexus-agent'
+import type { ToolName } from 'nexus-common'
 
 /**
  * 默认工具权限设置

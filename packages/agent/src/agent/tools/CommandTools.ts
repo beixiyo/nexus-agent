@@ -1,4 +1,4 @@
-import type { ToolName } from '../types'
+import type { ToolName } from 'nexus-common'
 import { execSync } from 'node:child_process'
 
 /**

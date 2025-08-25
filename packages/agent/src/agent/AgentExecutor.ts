@@ -1,8 +1,8 @@
-import type { AgentOptions } from './types'
+import type { AgentOptions } from 'nexus-common'
+import { parseXMLResponse } from 'nexus-common'
 import { SERVER_CONFIG } from '@/server/config'
 import { Log } from '@/utils'
 import { ToolExecutor } from './ToolExecutor'
-import { parseXMLResponse } from './XMLStateMachineParser'
 
 /**
  * Agent 主类，接收 LLM 输出，解析并执行工具调用，返回最终答案

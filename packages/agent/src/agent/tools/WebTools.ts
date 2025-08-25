@@ -1,4 +1,4 @@
-import type { ToolName } from '../types'
+import type { ToolName } from 'nexus-common'
 
 /**
  * 网络工具处理器

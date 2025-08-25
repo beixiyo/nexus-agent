@@ -1,4 +1,4 @@
-import type { SystemInfo, ToolName } from '../types'
+import type { SystemInfo, ToolName } from 'nexus-common'
 import * as os from 'node:os'
 import { SERVER_CONFIG } from '@/server/config'
 

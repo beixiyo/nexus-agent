@@ -1,5 +1,4 @@
 import type { AgentResponse } from './types'
-import { Log } from '@/utils'
 import { ParseState } from './types'
 
 const USER_TASK_START_TAG = 'user_task'
@@ -82,7 +81,7 @@ export class XMLStateMachineParser {
             : [parsed]
         }
         catch (e: any) {
-          Log.error(`解析 tools JSON 失败 ${e?.message}`)
+          console.error(`解析 tools JSON 失败 ${e?.message}`)
         }
         this.state = ParseState.NONE
         this.buffer = ''
@@ -176,7 +175,7 @@ export function parseXMLResponse(xmlContent: string): AgentResponse | null {
   /** 移除可能的代码块标记 */
   const cleanContent = xmlContent.replace(/```xml\s*|\s*```/g, '').trim()
 
-  Log.debug(`开始解析 XML 内容，长度: ${cleanContent.length}`)
+  console.log(`开始解析 XML 内容，长度: ${cleanContent.length}`)
 
   const parser = new XMLStateMachineParser()
   parser.processString(cleanContent)
@@ -185,10 +184,10 @@ export function parseXMLResponse(xmlContent: string): AgentResponse | null {
   const hasPartRes = Object.values(result).some(v => v !== '')
 
   if (hasPartRes) {
-    Log.debug(`XML 解析完成: ${JSON.stringify(result, null, 2)}`)
+    console.debug(`XML 解析完成: ${JSON.stringify(result, null, 2)}`)
     return result
   }
 
-  Log.warn('XML 内容为空或无法解析')
+  console.warn('XML 内容为空或无法解析')
   return null
 }

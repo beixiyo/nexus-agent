@@ -1,4 +1,4 @@
-import type { FileInfo, ToolName } from '../types'
+import type { FileInfo, ToolName } from 'nexus-common'
 import {
   copyFileSync,
   existsSync,

@@ -1,4 +1,4 @@
-import type { ToolCall } from '@jl-org/nexus-agent'
+import type { ToolCall } from 'nexus-common'
 import type { DangerousTool } from '@/config'
 import {
   isAppendFileParameters,
@@ -12,7 +12,7 @@ import {
   isSetEnvVariableParameters,
   isWriteFileParameters,
   parseXMLResponse,
-} from '@jl-org/nexus-agent'
+} from 'nexus-common'
 import { DANGEROUS_TOOLS, TOOL_RISK_CONFIG, ToolRiskLevel } from '@/config'
 import { ChromeStorage } from './storage'
 

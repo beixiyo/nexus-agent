@@ -1,11 +1,11 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entry: [
-    './src/agent/cli.ts',
-    './src/index.ts',
-    './src/server/index.ts',
-  ],
+  entry: {
+    index: './src/index.ts',
+    cli: './src/agent/cli.ts',
+    server: './src/server/index.ts',
+  },
   outDir: 'dist',
   format: ['cjs', 'esm'],
   clean: true,

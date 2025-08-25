@@ -1,4 +1,4 @@
-import type { ToolCall, ToolName } from '@jl-org/nexus-agent'
+import type { ToolCall, ToolName } from 'nexus-common'
 import { AlertTriangle, FileText, Shield, Terminal } from 'lucide-react'
 import { memo, useState } from 'react'
 import { Checkbox } from '@/components/Checkbox'

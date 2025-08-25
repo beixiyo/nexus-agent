@@ -1,4 +1,4 @@
-import type { ToolCall, ToolName, ToolResult } from '@jl-org/nexus-agent'
+import type { ToolCall, ToolName, ToolResult } from 'nexus-common'
 import type { DangerousTool } from '@/config'
 import { AgentApi } from '@/api/AgentApi'
 import { Message } from '@/components'

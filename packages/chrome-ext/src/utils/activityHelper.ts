@@ -1,4 +1,4 @@
-import type { ToolCall, ToolName } from '@jl-org/nexus-agent'
+import type { ToolCall, ToolName } from 'nexus-common'
 import type { ActivityItem } from '@/types'
 import {
   isAppendFileParameters,
@@ -17,7 +17,7 @@ import {
   isSearchWebParameters,
   isSetEnvVariableParameters,
   isWriteFileParameters,
-} from '@jl-org/nexus-agent'
+} from 'nexus-common'
 
 /**
  * 活动记录辅助工具

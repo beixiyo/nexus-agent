@@ -1,4 +1,4 @@
-import type { SystemInfo, ToolName } from '@jl-org/nexus-agent'
+import type { SystemInfo, ToolName } from 'nexus-common'
 import type { Resp } from '@/types'
 import { DEFAULT_CONNECTION_CONFIG } from '@/config'
 import { http } from './instance'
@@ -38,6 +38,7 @@ export class AgentApi {
   static health(): Promise<Resp<any>> {
     return http.get('/health', {
       baseUrl: `${DEFAULT_CONNECTION_CONFIG.serverUrl}/api`,
+      timeout: 8000,
     })
   }
 }

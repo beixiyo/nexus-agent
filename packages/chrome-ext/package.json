@@ -13,7 +13,7 @@
   "dependencies": {
     "@jl-org/http": "^1.1.2",
     "@jl-org/log": "^1.0.0",
-    "@jl-org/nexus-agent": "workspace:*",
+    "nexus-common": "workspace:*",
     "@jl-org/tool": "^3.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

@@ -1,4 +1,5 @@
-import type { ToolCall } from '@jl-org/nexus-agent'
+import type { ToolCall } from 'nexus-common'
+import { AlertTriangle, Check } from 'lucide-react'
 import {
   isAppendFileParameters,
   isCopyFileParameters,
@@ -10,8 +11,7 @@ import {
   isRunCommandParameters,
   isSetEnvVariableParameters,
   isWriteFileParameters,
-} from '@jl-org/nexus-agent'
-import { AlertTriangle, Check } from 'lucide-react'
+} from 'nexus-common'
 import React, { memo, useState } from 'react'
 import { ToolRiskLevel } from '@/config'
 import { cn } from '@/utils'

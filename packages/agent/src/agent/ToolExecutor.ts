@@ -1,10 +1,4 @@
-import type { AgentResponse, ToolCall, ToolName, ToolResult } from './types'
-import { Log } from '@/utils'
-import { CommandTools } from './tools/CommandTools'
-import { ContentTools } from './tools/ContentTools'
-import { FileTools } from './tools/FileTools'
-import { SystemTools } from './tools/SystemTools'
-import { WebTools } from './tools/WebTools'
+import type { AgentResponse, ToolCall, ToolName, ToolResult } from 'nexus-common'
 import {
   isAppendFileParameters,
   isCopyFileParameters,
@@ -22,7 +16,13 @@ import {
   isSearchWebParameters,
   isSetEnvVariableParameters,
   isWriteFileParameters,
-} from './types'
+} from 'nexus-common'
+import { Log } from '@/utils'
+import { CommandTools } from './tools/CommandTools'
+import { ContentTools } from './tools/ContentTools'
+import { FileTools } from './tools/FileTools'
+import { SystemTools } from './tools/SystemTools'
+import { WebTools } from './tools/WebTools'
 
 /**
  * 类型检查用的

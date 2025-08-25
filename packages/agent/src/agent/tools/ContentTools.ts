@@ -1,4 +1,4 @@
-import type { ToolName } from '../types'
+import type { ToolName } from 'nexus-common'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { PathSecurityUtils } from './PathSecurityUtils'
 

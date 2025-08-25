@@ -1,5 +1,5 @@
-import type { AgentResponse, ToolCall } from '@jl-org/nexus-agent'
-import { parseXMLResponse } from '@jl-org/nexus-agent'
+import type { AgentResponse, ToolCall } from 'nexus-common'
+import { parseXMLResponse } from 'nexus-common'
 import { Log } from '@/utils/Logger'
 
 /**
