@@ -1,13 +1,15 @@
 import type { ActivityItem, Status } from '@/types'
 import type { ConnectionConfig } from '@/utils'
+import { copyToClipboard } from '@jl-org/tool'
 import { useCallback, useEffect, useState } from 'react'
 import { AgentStatus } from '@/components/AgentStatus'
+import { Button } from '@/components/Button'
 import { Card } from '@/components/Card'
 import { Checkbox } from '@/components/Checkbox'
 import { RecentActivity } from '@/components/RecentActivity'
 import { SettingsPage } from '@/components/SettingsPage'
 import { StatusIndicator } from '@/components/StatusIndicator'
-import { DEFAULT_AGENT_ENABLED, DEFAULT_CONNECTION_CONFIG } from '@/config'
+import { DEFAULT_AGENT_ENABLED, DEFAULT_CONNECTION_CONFIG, getPrompt } from '@/config'
 import { ChromeStorage } from '@/utils'
 import { useConnectionPolling, useTheme } from './hooks'
 
@@ -55,6 +57,12 @@ export default function App() {
         })
       }
     })
+  }, [])
+
+  /** 处理复制 prompt */
+  const handleCopyPrompt = useCallback(() => {
+    const prompt = getPrompt()
+    copyToClipboard(prompt)
   }, [])
 
   /** 使用连接状态轮询 Hook */
@@ -142,29 +150,44 @@ export default function App() {
           padding="sm"
         >
           {/* Header */ }
-          <div className="mb-3 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="text-xl">🤖</div>
-              <h1 className="text-lg text-gray-800 font-bold dark:text-white">Nexus Agent</h1>
+          <div className="mb-3">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <div className="text-xl">🤖</div>
+                <h1 className="text-lg text-gray-800 font-bold dark:text-white">Nexus Agent</h1>
+              </div>
+              <div className="flex items-center gap-2">
+                <StatusIndicator
+                  status={ agentEnabled
+                    ? 'connected'
+                    : 'disconnected' }
+                  showText={ false }
+                  size="sm"
+                />
+                <span className="text-xs text-gray-600 dark:text-gray-300">
+                  { agentEnabled
+                    ? '启用'
+                    : '禁用' }
+                </span>
+                <Checkbox
+                  checked={ agentEnabled }
+                  onChange={ handleAgentEnabledChange }
+                  size={ 20 }
+                />
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <StatusIndicator
-                status={ agentEnabled
-                  ? 'connected'
-                  : 'disconnected' }
-                showText={ false }
+
+            {/* 复制 Prompt 按钮 - 独立一行 */}
+            <div className="flex justify-end">
+              <Button
                 size="sm"
-              />
-              <span className="text-xs text-gray-600 dark:text-gray-300">
-                { agentEnabled
-                  ? '启用'
-                  : '禁用' }
-              </span>
-              <Checkbox
-                checked={ agentEnabled }
-                onChange={ handleAgentEnabledChange }
-                size={ 20 }
-              />
+                designStyle="flat"
+                onClick={ handleCopyPrompt }
+                className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
+              >
+                <span className="text-sm">📋</span>
+                <span>复制 Prompt</span>
+              </Button>
             </div>
           </div>
 

@@ -1,4 +1,5 @@
 export * from './permission'
+export * from './prompt'
 
 export const THEME_KEY = 'theme'
 

@@ -77,7 +77,7 @@ cd nexus-agent
 pnpm install
 
 # 启动开发服务器
-pnpm serve:dev
+pnpm dev:serve
 ```
 
 ### 3. 配置插件
@@ -152,12 +152,12 @@ nexus-agent/
 
 ```bash
 # 开发模式
-pnpm serve:dev      # 启动本地服务器
-pnpm ext:dev        # 开发浏览器插件
+pnpm dev:serve      # 启动本地服务器
+pnpm dev:ext        # 开发浏览器插件
 
 # 构建
-pnpm serve:build    # 构建本地服务器
-pnpm ext:build      # 构建浏览器插件
+pnpm build:serve    # 构建本地服务器
+pnpm build:ext      # 构建浏览器插件
 
 # 测试
 pnpm test           # 运行测试
